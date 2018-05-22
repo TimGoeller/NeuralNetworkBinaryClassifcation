@@ -2,8 +2,9 @@ package NeuralNetwork;
 
 import java.util.List;
 
-public class HiddenNeuron extends Neuron {
+public class HiddenNeuron extends ActivationNeuron {
 
-    List<Integer> weights;
-    int bias;
+    public HiddenNeuron(int previousLayerNeuronCount) {
+        super(previousLayerNeuronCount);
+    }
 }
