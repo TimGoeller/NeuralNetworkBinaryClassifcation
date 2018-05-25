@@ -1,6 +1,7 @@
 package NeuralNetwork;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class NeuralNetwork { //static?
@@ -24,10 +25,9 @@ public class NeuralNetwork { //static?
 
         Layer previousLayer;
 
-        if(hiddenLayers.isEmpty()) {
+        if (hiddenLayers.isEmpty()) {
             previousLayer = inputLayer;
-        }
-        else {
+        } else {
             previousLayer = hiddenLayers.get(hiddenLayers.size() - 1);
         }
 
@@ -38,4 +38,35 @@ public class NeuralNetwork { //static?
 
         hiddenLayers.add(hiddenLayer);
     }
+
+    public void initializeLayers() {
+
+        Iterator<Layer> layerIt = getLayersAsIterator();
+
+        while(layerIt.hasNext()) {
+            layerIt.next().initializeLayer();
+        }
+    }
+
+    public Iterator<Layer> getLayersAsIterator() {
+        return new Iterator<Layer>() {
+
+            private Layer currentLayer;
+
+            @Override
+            public boolean hasNext() {
+                return !(currentLayer instanceof OutputLayer);
+            }
+
+            @Override
+            public Layer next() {
+                if(currentLayer == null)
+                    currentLayer = inputLayer;
+                else
+                    currentLayer = currentLayer.getNextLayer();
+                return currentLayer;
+            }
+        };
+    }
+
 }

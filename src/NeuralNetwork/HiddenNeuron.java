@@ -7,4 +7,6 @@ public class HiddenNeuron extends ActivationNeuron {
     public HiddenNeuron() {
         super();
     }
+
+
 }

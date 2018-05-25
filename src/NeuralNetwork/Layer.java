@@ -1,5 +1,7 @@
 package NeuralNetwork;
 
+import java.util.List;
+
 public abstract class Layer {
 
     abstract int getNeuronCount();
@@ -7,19 +9,23 @@ public abstract class Layer {
     private Layer nextLayer;
     private Layer previousLayer;
 
-    public Layer getNextLayer() {
+    Layer getNextLayer() {
         return nextLayer;
     }
 
-    public Layer getPreviousLayer() {
+    Layer getPreviousLayer() {
         return previousLayer;
     }
 
-    public void setNextLayer(Layer nextLayer) {
+    void setNextLayer(Layer nextLayer) {
         this.nextLayer = nextLayer;
     }
 
-    public  void setPreviousLayer(Layer previousLayer) {
+    void setPreviousLayer(Layer previousLayer) {
         this.previousLayer = previousLayer;
     }
+
+    public abstract List<Neuron> getNeurons();
+
+    public abstract void initializeLayer();
 }

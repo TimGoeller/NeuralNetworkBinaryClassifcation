@@ -5,9 +5,15 @@ import java.util.List;
 
 public class ActivationNeuron extends Neuron{
 
-    ArrayList<Connection> inputConnections;
+    List<Connection> inputConnections = new ArrayList<Connection>();
+    double bias;
 
     public ActivationNeuron() {
 
     }
+
+    public void setConnections(List<Connection> connections) {
+        this.inputConnections = connections;
+    }
+
 }
