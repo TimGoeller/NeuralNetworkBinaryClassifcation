@@ -1,5 +1,10 @@
 package NeuralNetwork;
 
+import NeuralNetwork.Layers.HiddenLayer;
+import NeuralNetwork.Layers.InputLayer;
+import NeuralNetwork.Layers.Layer;
+import NeuralNetwork.Layers.OutputLayer;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

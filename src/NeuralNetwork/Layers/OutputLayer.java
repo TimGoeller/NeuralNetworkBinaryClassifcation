@@ -1,4 +1,8 @@
-package NeuralNetwork;
+package NeuralNetwork.Layers;
+
+import NeuralNetwork.Connection;
+import NeuralNetwork.Neurons.Neuron;
+import NeuralNetwork.Neurons.OutputNeuron;
 
 import java.util.ArrayList;
 import java.util.List;

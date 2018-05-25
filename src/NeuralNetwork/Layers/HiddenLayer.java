@@ -1,7 +1,11 @@
-package NeuralNetwork;
+package NeuralNetwork.Layers;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import NeuralNetwork.Connection;
+import NeuralNetwork.Neurons.HiddenNeuron;
+import NeuralNetwork.Neurons.Neuron;
 
 public class HiddenLayer extends Layer {
 

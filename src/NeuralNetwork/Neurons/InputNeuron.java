@@ -1,4 +1,4 @@
-package NeuralNetwork;
+package NeuralNetwork.Neurons;
 
 import java.util.List;
 

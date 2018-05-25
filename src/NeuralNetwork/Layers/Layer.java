@@ -1,6 +1,8 @@
-package NeuralNetwork;
+package NeuralNetwork.Layers;
 
 import java.util.List;
+
+import NeuralNetwork.Neurons.Neuron;
 
 public abstract class Layer {
 
@@ -9,19 +11,19 @@ public abstract class Layer {
     private Layer nextLayer;
     private Layer previousLayer;
 
-    Layer getNextLayer() {
+    public Layer getNextLayer() {
         return nextLayer;
     }
 
-    Layer getPreviousLayer() {
+    public Layer getPreviousLayer() {
         return previousLayer;
     }
 
-    void setNextLayer(Layer nextLayer) {
+    public void setNextLayer(Layer nextLayer) {
         this.nextLayer = nextLayer;
     }
 
-    void setPreviousLayer(Layer previousLayer) {
+    public void setPreviousLayer(Layer previousLayer) {
         this.previousLayer = previousLayer;
     }
 

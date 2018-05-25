@@ -1,14 +1,16 @@
-package NeuralNetwork;
+package NeuralNetwork.Layers;
 
-import java.rmi.activation.ActivationID;
 import java.util.ArrayList;
 import java.util.List;
+
+import NeuralNetwork.Neurons.InputNeuron;
+import NeuralNetwork.Neurons.Neuron;
 
 public class InputLayer extends Layer {
 
     private List<InputNeuron> inputNeurons = new ArrayList<InputNeuron>();
 
-    InputLayer(int inputNeuronCount) {
+    public InputLayer(int inputNeuronCount) {
         for(int i = 0; i <= inputNeuronCount; i++) {
             inputNeurons.add(new InputNeuron());
         }

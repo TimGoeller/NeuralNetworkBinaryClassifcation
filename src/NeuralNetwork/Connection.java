@@ -1,5 +1,7 @@
 package NeuralNetwork;
 
+import NeuralNetwork.Neurons.Neuron;
+
 public class Connection {
 
     private Neuron sourceNeuron;
