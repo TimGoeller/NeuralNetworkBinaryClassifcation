@@ -5,7 +5,7 @@ import java.util.List;
 
 public class HiddenLayer extends Layer {
 
-    private List<HiddenNeuron> neurons;
+    private List<HiddenNeuron> neurons = new ArrayList<HiddenNeuron>();
 
     public HiddenLayer(int neuronCount) {
         for(int i = 0; i <= neuronCount; i++) {

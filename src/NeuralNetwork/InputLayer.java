@@ -6,7 +6,7 @@ import java.util.List;
 
 public class InputLayer extends Layer {
 
-    private List<InputNeuron> inputNeurons;
+    private List<InputNeuron> inputNeurons = new ArrayList<InputNeuron>();
 
     InputLayer(int inputNeuronCount) {
         for(int i = 0; i <= inputNeuronCount; i++) {
