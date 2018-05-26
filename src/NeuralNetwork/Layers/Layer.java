@@ -1,5 +1,6 @@
 package NeuralNetwork.Layers;
 
+import java.util.Iterator;
 import java.util.List;
 
 import NeuralNetwork.Neurons.Neuron;
@@ -27,7 +28,7 @@ public abstract class Layer {
         this.previousLayer = previousLayer;
     }
 
-    public abstract List<Neuron> getNeurons();
+    public abstract Iterator<Neuron> getNeurons();
 
     public abstract void initializeLayer();
 }

@@ -1,6 +1,7 @@
 package NeuralNetwork.Layers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import NeuralNetwork.Connection;
@@ -23,17 +24,38 @@ public class HiddenLayer extends Layer {
     }
 
     @Override
-    public List<Neuron> getNeurons() {
-        return (List<Neuron>)(List<?>)neurons;
+    public Iterator<Neuron> getNeurons() {
+
+        return new Iterator<Neuron>() {
+
+            int currentIndex;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < neurons.size();
+            }
+
+            @Override
+            public Neuron next() {
+
+                Neuron neuronToReturn = null;
+
+                if(currentIndex < neurons.size()) {
+                    neuronToReturn = neurons.get(currentIndex);
+                }
+
+                currentIndex++;
+                return neuronToReturn;
+            }
+        };
+
     }
 
     @Override
     public void initializeLayer() {
         for(HiddenNeuron neuron : neurons) {
             List<Connection> hiddenNeuronConnections = new ArrayList<Connection>();
-            for(Neuron previousLayerNeuron : super.getPreviousLayer().getNeurons()) {
-                hiddenNeuronConnections.add(new Connection(previousLayerNeuron, neuron));
-            }
+            super.getPreviousLayer().getNeurons().forEachRemaining(previousNeuron -> hiddenNeuronConnections.add(new Connection(previousNeuron, neuron)));
             neuron.setConnections(hiddenNeuronConnections);
         }
     }

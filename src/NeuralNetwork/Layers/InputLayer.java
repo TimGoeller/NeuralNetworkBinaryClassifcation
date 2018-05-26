@@ -1,6 +1,7 @@
 package NeuralNetwork.Layers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import NeuralNetwork.Neurons.InputNeuron;
@@ -22,8 +23,31 @@ public class InputLayer extends Layer {
     }
 
     @Override
-    public List<Neuron> getNeurons() {
-        return (List<Neuron>)(List<?>)inputNeurons;
+    public Iterator<Neuron> getNeurons() {
+
+        return new Iterator<Neuron>() {
+
+            int currentIndex;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < inputNeurons.size();
+            }
+
+            @Override
+            public Neuron next() {
+
+                Neuron neuronToReturn = null;
+
+                if(currentIndex < inputNeurons.size()) {
+                    neuronToReturn = inputNeurons.get(currentIndex);
+                }
+
+                currentIndex++;
+                return neuronToReturn;
+            }
+        };
+
     }
 
     @Override
