@@ -1,13 +1,20 @@
 package NeuralNetwork.Layers;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import NeuralNetwork.NeuralNetwork;
+import NeuralNetwork.Neurons.HiddenNeuron;
 import NeuralNetwork.Neurons.Neuron;
 
-public abstract class Layer {
+public abstract class Layer<T extends Neuron> {
 
-    abstract int getNeuronCount();
+    protected List<T> neurons = new ArrayList<T>();
+
+    int getNeuronCount() {
+        return neurons.size();
+    }
 
     private Layer nextLayer;
     private Layer previousLayer;
@@ -28,7 +35,32 @@ public abstract class Layer {
         this.previousLayer = previousLayer;
     }
 
-    public abstract Iterator<Neuron> getNeurons();
+    public Iterator<T> getNeurons() {
+
+        return new Iterator<T>() {
+
+            int currentIndex;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < neurons.size();
+            }
+
+            @Override
+            public T next() {
+
+                Neuron neuronToReturn = null;
+
+                if(currentIndex < neurons.size()) {
+                    neuronToReturn = neurons.get(currentIndex);
+                }
+
+                currentIndex++;
+                return (T)neuronToReturn;
+            }
+        };
+
+    }
 
     public abstract void initializeLayer();
 }
