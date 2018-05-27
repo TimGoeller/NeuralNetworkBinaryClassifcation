@@ -29,13 +29,12 @@ public abstract class ActivationNeuron extends Neuron {
         this.bias = bias;
     }
 
-    public double sigmoidActivation()
+    public void sigmoidActivation()
     {
-        double x = 0;
-        return destinationValue = 1 / ( 1 +  Math.pow( Math.E, -x ) );
+        destinationValue = 1 / ( 1 +  Math.pow( Math.E, -getValueOfInputConnections() ) );
     }
 
-    public  double getValueOfInputConnections()
+    public double getValueOfInputConnections()
     {
         double sum = 0;
         for ( Connection c : inputConnections )

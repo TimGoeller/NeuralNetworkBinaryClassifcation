@@ -4,7 +4,7 @@ public abstract class Neuron
 {
     private double activationValue;
 
-    public void setActivationValue( double activationValue )
+    public void setActivationValue(double activationValue)
     {
         this.activationValue = activationValue;
     }
