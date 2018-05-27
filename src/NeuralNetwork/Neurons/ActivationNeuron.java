@@ -4,10 +4,10 @@ import NeuralNetwork.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivationNeuron extends Neuron {
+public abstract class ActivationNeuron extends Neuron {
 
-    List<Connection> inputConnections = new ArrayList<Connection>();
-    double bias;
+    private List<Connection> inputConnections = new ArrayList<Connection>();
+    private double bias;
 
     public ActivationNeuron() {
 
