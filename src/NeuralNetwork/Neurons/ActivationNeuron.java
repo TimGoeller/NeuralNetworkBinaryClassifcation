@@ -8,7 +8,8 @@ public abstract class ActivationNeuron extends Neuron {
 
     private List<Connection> inputConnections = new ArrayList<Connection>();
     private double bias;
-    private double destinationValue;
+
+    private double activationValue;
 
     public ActivationNeuron() {
 
@@ -41,6 +42,17 @@ public abstract class ActivationNeuron extends Neuron {
         {
             sum += c.getConnectionValue();
         }
+        activationValue = sum;
         return sum;
+    }
+
+    public void setActivationValue(double activationValue)
+    {
+        this.activationValue = activationValue;
+    }
+
+    public double getActivationValue()
+    {
+        return activationValue;
     }
 }

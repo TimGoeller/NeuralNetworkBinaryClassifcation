@@ -4,8 +4,10 @@ import NeuralNetwork.Layers.HiddenLayer;
 import NeuralNetwork.Layers.InputLayer;
 import NeuralNetwork.Layers.Layer;
 import NeuralNetwork.Layers.OutputLayer;
+import NeuralNetwork.Neurons.ActivationNeuron;
+import NeuralNetwork.Neurons.InputNeuron;
+import NeuralNetwork.Neurons.Neuron;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,9 +29,7 @@ public class NeuralNetwork { //static?
         this.dataset = dataset;
     }
 
-    public void addHiddenLayer(int neuronCount, Dataset data) {
-
-        this.dataset = data;
+    public void addHiddenLayer(int neuronCount) {
 
         HiddenLayer hiddenLayer = new HiddenLayer(neuronCount);
 
@@ -47,6 +47,43 @@ public class NeuralNetwork { //static?
         outputLayer.setPreviousLayer(hiddenLayer);
 
         hiddenLayers.add(hiddenLayer);
+    }
+
+    public void trainNetwork(int epochs) {
+
+        while(epochs > 0) {
+            epochs --;
+
+            dataset.trainingSet.forEach((data -> train(data)));
+        }
+    }
+
+    private void train(List<Double> data) {
+
+        Iterator<Layer> layerIt = getLayersAsIterator();
+
+        int currentNeuron = 0;
+        for(InputNeuron neuron : inputLayer.getNeurons()) {
+            neuron.setDestinationValue(data.get(currentNeuron++));
+            layerIt.next();
+        }
+        outputLayer.getOutputNeuron().setExpectedValue(data.get(currentNeuron));
+
+        Layer currentLayer = inputLayer;
+
+        while(currentLayer.getNextLayer() != null) {
+            forwardPass(currentLayer.getNextLayer());
+            currentLayer = currentLayer.getNextLayer();
+        }
+    }
+
+    private void forwardPass(Layer layer) {
+
+        Iterator<Neuron> it = layer.getNeuronsAsIterator();
+        while(it.hasNext()) {
+            ActivationNeuron currentNeuron = (ActivationNeuron)it.next();
+            currentNeuron.sigmoidActivation();
+        }
     }
 
     public void initializeLayers() {

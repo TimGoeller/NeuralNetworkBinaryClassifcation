@@ -10,7 +10,7 @@ import NeuralNetwork.Neurons.Neuron;
 public class InputLayer extends Layer<InputNeuron>{
 
     public InputLayer(int inputNeuronCount) {
-        for(int i = 0; i <= inputNeuronCount; i++) {
+        for(int i = 0; i < inputNeuronCount; i++) {
             neurons.add(new InputNeuron());
         }
     }

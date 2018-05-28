@@ -2,15 +2,16 @@ package NeuralNetwork.Neurons;
 
 public abstract class Neuron
 {
-    private double activationValue;
+    protected double destinationValue;
 
-    public void setActivationValue(double activationValue)
-    {
-        this.activationValue = activationValue;
+    public double getDestinationValue() {
+        return destinationValue;
     }
 
-    public double getActivationValue()
-    {
-        return activationValue;
+    public void setDestinationValue(double destinationValue) {
+        this.destinationValue = destinationValue;
     }
+
+
+
 }

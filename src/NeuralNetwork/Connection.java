@@ -23,6 +23,6 @@ public class Connection {
 
     public double getConnectionValue()
     {
-        return sourceNeuron.getActivationValue() * weight;
+        return sourceNeuron.getDestinationValue() * weight;
     }
 }

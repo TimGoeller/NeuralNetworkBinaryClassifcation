@@ -35,7 +35,7 @@ public abstract class Layer<T extends Neuron> {
         this.previousLayer = previousLayer;
     }
 
-    public Iterator<T> getNeurons() {
+    public Iterator<T> getNeuronsAsIterator() {
 
         return new Iterator<T>() {
 
@@ -60,6 +60,9 @@ public abstract class Layer<T extends Neuron> {
             }
         };
 
+    }
+    public List<T> getNeurons() {
+        return neurons;
     }
 
     public abstract void initializeLayer();
