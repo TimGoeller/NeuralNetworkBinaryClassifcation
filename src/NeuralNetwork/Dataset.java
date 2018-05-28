@@ -12,6 +12,12 @@ public class Dataset {
     List<List<Double>> trainingSet;
     List<List<Double>> testSet;
 
+    private Dataset(List<List<Double>> trainingSet, List<List<Double>> testSet) {
+
+        this.trainingSet = trainingSet;
+        this.testSet = testSet;
+    }
+
     public static Dataset readDatasetFromCSV(String csvPath) {
 
         List<List<Double>> data = new ArrayList<>();
@@ -42,15 +48,9 @@ public class Dataset {
 
         int splitAt = (int)(data.size() * 0.2);
 
-        var trainingSet = data.subList(0, data.size() - splitAt);
-        var testSet = data.subList( data.size() - splitAt, data.size());
+        List<List<Double>> trainingSet = data.subList(0, data.size() - splitAt);
+        List<List<Double>> testSet = data.subList( data.size() - splitAt, data.size());
 
         return new Dataset(trainingSet, testSet);
-    }
-
-    private Dataset(List<List<Double>> trainingSet, List<List<Double>> testSet) {
-
-        this.trainingSet = trainingSet;
-        this.testSet = testSet;
     }
 }

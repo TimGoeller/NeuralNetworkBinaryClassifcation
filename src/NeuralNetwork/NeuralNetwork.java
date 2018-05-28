@@ -18,13 +18,13 @@ public class NeuralNetwork { //static?
 
     private Dataset dataset;
 
-    public NeuralNetwork(int inputNeuronCount) {
+    public NeuralNetwork(int inputNeuronCount, Dataset dataset) {
 
         inputLayer = new InputLayer(inputNeuronCount);
         outputLayer = new OutputLayer();
         inputLayer.setNextLayer(outputLayer);
         outputLayer.setPreviousLayer(inputLayer);
-
+        this.dataset = dataset;
     }
 
     public void addHiddenLayer(int neuronCount, Dataset data) {
