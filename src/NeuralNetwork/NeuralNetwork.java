@@ -5,6 +5,7 @@ import NeuralNetwork.Layers.InputLayer;
 import NeuralNetwork.Layers.Layer;
 import NeuralNetwork.Layers.OutputLayer;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,8 @@ public class NeuralNetwork { //static?
     public List<HiddenLayer> hiddenLayers = new ArrayList<HiddenLayer>();
     private OutputLayer outputLayer;
 
+    private Dataset dataset;
+
     public NeuralNetwork(int inputNeuronCount) {
 
         inputLayer = new InputLayer(inputNeuronCount);
@@ -24,7 +27,9 @@ public class NeuralNetwork { //static?
 
     }
 
-    public void addHiddenLayer(int neuronCount) {
+    public void addHiddenLayer(int neuronCount, Dataset data) {
+
+        this.dataset = data;
 
         HiddenLayer hiddenLayer = new HiddenLayer(neuronCount);
 
@@ -73,5 +78,7 @@ public class NeuralNetwork { //static?
             }
         };
     }
+
+
 
 }
