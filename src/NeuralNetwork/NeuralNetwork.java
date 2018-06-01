@@ -111,7 +111,13 @@ public class NeuralNetwork { //static?
                 if(a == 1) {
                     a = a-0.00000001; //Teilen: The way to go
                 }
-                double error = -(y*Math.log(a)+(1-y)*Math.log(1-a));
+
+                double addedValues = 0;
+                for(int i = 0; i < inputLayer.getNeurons().size(); i++) {
+                    addedValues += inputLayer.getNeurons().get(i).getActivationValue()*(a-y);
+                }
+
+                double error = (1.0f/inputLayer.getNeurons().size())*addedValues;
                 currentNeuron.setError(error);
 
 
