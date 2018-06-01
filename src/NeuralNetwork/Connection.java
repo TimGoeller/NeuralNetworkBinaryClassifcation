@@ -1,5 +1,6 @@
 package NeuralNetwork;
 
+import NeuralNetwork.Neurons.ActivationNeuron;
 import NeuralNetwork.Neurons.Neuron;
 
 public class Connection {
@@ -7,7 +8,15 @@ public class Connection {
     private Neuron sourceNeuron;
     private Neuron destinationNeuron;
 
-    private double weight = 1;
+    private double weight = Math.random();
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 
     public Connection(Neuron sourceNeuron, Neuron destinationNeuron)
     {
@@ -23,6 +32,14 @@ public class Connection {
 
     public double getConnectionValue()
     {
-        return sourceNeuron.getDestinationValue() * weight;
+        return (sourceNeuron).getActivationValue()* weight;
+    }
+
+    public Neuron getSourceNeuron() {
+        return sourceNeuron;
+    }
+
+    public Neuron getDestinationNeuron() {
+        return destinationNeuron;
     }
 }

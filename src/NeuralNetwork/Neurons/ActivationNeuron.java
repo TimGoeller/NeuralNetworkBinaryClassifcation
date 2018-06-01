@@ -7,9 +7,22 @@ import java.util.List;
 public abstract class ActivationNeuron extends Neuron {
 
     private List<Connection> inputConnections = new ArrayList<Connection>();
+
+    protected double inputValue;
+
     private double bias;
 
-    private double activationValue;
+    private double error;
+
+    public double getError() {
+        return error;
+    }
+
+    public void setError(double error) {
+        this.error = error;
+    }
+
+
 
     public ActivationNeuron() {
 
@@ -17,6 +30,11 @@ public abstract class ActivationNeuron extends Neuron {
 
     public void setConnections(List<Connection> connections) {
         this.inputConnections = connections;
+    }
+
+
+    public List<Connection> getInputConnections() {
+        return inputConnections;
     }
 
     public double getBias() {
@@ -32,7 +50,8 @@ public abstract class ActivationNeuron extends Neuron {
 
     public void sigmoidActivation()
     {
-        destinationValue = 1 / ( 1 +  Math.pow( Math.E, -getValueOfInputConnections() ) );
+        //System.out.println(1 +  Math.exp(-getValueOfInputConnections() ));
+        activationValue = 1 / ( 1 +  Math.exp(-getValueOfInputConnections()  ) );
     }
 
     public double getValueOfInputConnections()
@@ -42,17 +61,15 @@ public abstract class ActivationNeuron extends Neuron {
         {
             sum += c.getConnectionValue();
         }
-        activationValue = sum;
+        inputValue = sum;
         return sum;
     }
 
-    public void setActivationValue(double activationValue)
-    {
-        this.activationValue = activationValue;
+    public double getInputValue() {
+        return inputValue;
     }
 
-    public double getActivationValue()
-    {
-        return activationValue;
+    public void setInputValue(double inputValue) {
+        this.inputValue = inputValue;
     }
 }

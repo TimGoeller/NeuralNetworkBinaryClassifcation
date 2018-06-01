@@ -7,6 +7,7 @@ import NeuralNetwork.Layers.OutputLayer;
 import NeuralNetwork.Neurons.ActivationNeuron;
 import NeuralNetwork.Neurons.InputNeuron;
 import NeuralNetwork.Neurons.Neuron;
+import NeuralNetwork.Neurons.OutputNeuron;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,15 +19,18 @@ public class NeuralNetwork { //static?
     public List<HiddenLayer> hiddenLayers = new ArrayList<HiddenLayer>();
     private OutputLayer outputLayer;
 
+    private double learningRate;
+
     private Dataset dataset;
 
-    public NeuralNetwork(int inputNeuronCount, Dataset dataset) {
+    public NeuralNetwork(int inputNeuronCount, Dataset dataset, double learningRate) {
 
         inputLayer = new InputLayer(inputNeuronCount);
         outputLayer = new OutputLayer();
         inputLayer.setNextLayer(outputLayer);
         outputLayer.setPreviousLayer(inputLayer);
         this.dataset = dataset;
+        this.learningRate = learningRate;
     }
 
     public void addHiddenLayer(int neuronCount) {
@@ -54,26 +58,36 @@ public class NeuralNetwork { //static?
         while(epochs > 0) {
             epochs --;
 
-            dataset.trainingSet.forEach((data -> train(data)));
+            dataset.trainingSet.forEach(data -> train(data));
         }
     }
 
     private void train(List<Double> data) {
 
-        Iterator<Layer> layerIt = getLayersAsIterator();
+        System.out.println();
+        System.out.println("New Training Pass");
+        System.out.println();
 
         int currentNeuron = 0;
         for(InputNeuron neuron : inputLayer.getNeurons()) {
-            neuron.setDestinationValue(data.get(currentNeuron++));
-            layerIt.next();
+            neuron.setActivationValue(data.get(currentNeuron++));
         }
         outputLayer.getOutputNeuron().setExpectedValue(data.get(currentNeuron));
 
         Layer currentLayer = inputLayer;
 
         while(currentLayer.getNextLayer() != null) {
-            forwardPass(currentLayer.getNextLayer());
             currentLayer = currentLayer.getNextLayer();
+            forwardPass(currentLayer );
+        }
+
+        currentLayer = outputLayer;
+
+        while(currentLayer.getPreviousLayer() != null) { //Input connections to next layer are changed
+            backwardPass(currentLayer);
+            currentLayer = currentLayer.getPreviousLayer();
+
+
         }
     }
 
@@ -84,6 +98,48 @@ public class NeuralNetwork { //static?
             ActivationNeuron currentNeuron = (ActivationNeuron)it.next();
             currentNeuron.sigmoidActivation();
         }
+    }
+
+    private void backwardPass(Layer layer) {
+
+        Iterator<Neuron> it = layer.getNeuronsAsIterator();
+        while(it.hasNext()) {
+            ActivationNeuron currentNeuron = (ActivationNeuron)it.next();
+            if(currentNeuron instanceof OutputNeuron) {
+                double y = ((OutputNeuron) currentNeuron).getExpectedValue();
+                double a = currentNeuron.getActivationValue();
+                if(a == 1) {
+                    a = a-0.00000001; //Teilen: The way to go
+                }
+                double error = -(y*Math.log(a)+(1-y)*Math.log(1-a));
+                currentNeuron.setError(error);
+
+
+                System.out.println("PREDICTION: " + currentNeuron.getActivationValue());
+                System.out.println("REAL VAL: " + ((OutputNeuron) currentNeuron).getExpectedValue());
+                System.out.println("Error: " + error);
+
+            }
+            else { //TODO:? (wth?)
+                double errorSum = 0;
+
+                for(Connection con : currentNeuron.getOutputConnections()) {
+                    //System.out.println(con.getWeight() * ((ActivationNeuron)con.getDestinationNeuron()).getActivationValue());
+                    errorSum += con.getWeight() * ((ActivationNeuron) con.getDestinationNeuron()).getError();
+                }
+                double errorMultipliedSigmoidDerivative = errorSum * (currentNeuron.getActivationValue() * (1-currentNeuron.getActivationValue()));
+                currentNeuron.setError(errorMultipliedSigmoidDerivative);
+                System.out.println("Propagated Error: " + errorMultipliedSigmoidDerivative);
+            }
+            //currentNeuron.ge
+
+            for(Connection con : currentNeuron.getInputConnections()) {
+                //System.out.println();
+                double change = con.getSourceNeuron().getActivationValue() * currentNeuron.getError() * learningRate;
+                con.setWeight(con.getWeight() + (con.getWeight() * currentNeuron.getError() * learningRate));
+            }
+        }
+
     }
 
     public void initializeLayers() {

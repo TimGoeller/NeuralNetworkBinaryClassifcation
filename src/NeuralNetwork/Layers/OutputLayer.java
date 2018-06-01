@@ -17,7 +17,9 @@ public class OutputLayer extends Layer<OutputNeuron> {
     public void initializeLayer() {
         List<Connection> outputNeuronConnections = new ArrayList<Connection>();
         super.getPreviousLayer().getNeuronsAsIterator().forEachRemaining(previousNeuron -> outputNeuronConnections.add(new Connection((Neuron)previousNeuron, neurons.get(0))));
-        neurons.get(0).setConnections(outputNeuronConnections);
+        getOutputNeuron().setConnections(outputNeuronConnections);
+
+        getOutputNeuron().getInputConnections().forEach(connection -> connection.getSourceNeuron().addOutputConnection(connection));
     }
 
     public OutputNeuron getOutputNeuron() {

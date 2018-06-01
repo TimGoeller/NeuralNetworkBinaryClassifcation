@@ -28,7 +28,6 @@ public class Dataset {
 
             NumberFormat format = NumberFormat.getInstance(Locale.GERMAN);
 
-
             while( s.hasNextLine() )
             {
                 List<Double> line = new ArrayList();

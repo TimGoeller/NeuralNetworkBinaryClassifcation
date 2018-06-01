@@ -12,7 +12,7 @@ public class HiddenLayer extends Layer<HiddenNeuron> {
 
 
     public HiddenLayer(int neuronCount) {
-        for(int i = 0; i <= neuronCount; i++) {
+        for(int i = 0; i < neuronCount; i++) {
             neurons.add(new HiddenNeuron());
         }
     }
@@ -23,6 +23,8 @@ public class HiddenLayer extends Layer<HiddenNeuron> {
             List<Connection> hiddenNeuronConnections = new ArrayList<Connection>();
             super.getPreviousLayer().getNeuronsAsIterator().forEachRemaining(previousNeuron -> hiddenNeuronConnections.add(new Connection((Neuron)previousNeuron, neuron)));
             neuron.setConnections(hiddenNeuronConnections);
+
+            neuron.getInputConnections().forEach(connection -> connection.getSourceNeuron().addOutputConnection(connection));
         }
     }
 }
