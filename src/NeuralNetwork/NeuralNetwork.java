@@ -86,9 +86,11 @@ public class NeuralNetwork { //static?
         while(currentLayer.getPreviousLayer() != null) { //Input connections to next layer are changed
             backwardPass(currentLayer);
             currentLayer = currentLayer.getPreviousLayer();
-
-
         }
+    }
+
+    public void test() {
+
     }
 
     private void forwardPass(Layer layer) {
@@ -142,7 +144,7 @@ public class NeuralNetwork { //static?
             for(Connection con : currentNeuron.getInputConnections()) {
                 //System.out.println();
                 double change = con.getSourceNeuron().getActivationValue() * currentNeuron.getError() * learningRate;
-                con.setWeight(con.getWeight() + (con.getWeight() * currentNeuron.getError() * learningRate));
+                con.setWeight(con.getWeight() + change);
             }
         }
 
