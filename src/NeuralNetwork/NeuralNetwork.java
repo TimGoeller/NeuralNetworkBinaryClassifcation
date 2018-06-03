@@ -67,6 +67,9 @@ public class NeuralNetwork { //static?
         System.out.println();
         System.out.println("New Training Pass");
         System.out.println();
+        System.out.println("X: " + data.get(0));
+        System.out.println("Y: " + data.get(1));
+        System.out.println();
 
         int currentNeuron = 0;
         for(InputNeuron neuron : inputLayer.getNeurons()) {
@@ -119,7 +122,7 @@ public class NeuralNetwork { //static?
                     addedValues += inputLayer.getNeurons().get(i).getActivationValue()*(a-y);
                 }
 
-                double error = (1.0f/inputLayer.getNeurons().size())*addedValues;
+                double error = -(1.0f/inputLayer.getNeurons().size())*addedValues;
                 currentNeuron.setError(error);
 
 
@@ -137,7 +140,7 @@ public class NeuralNetwork { //static?
                 }
                 double errorMultipliedSigmoidDerivative = errorSum * (currentNeuron.getActivationValue() * (1-currentNeuron.getActivationValue()));
                 currentNeuron.setError(errorMultipliedSigmoidDerivative);
-                System.out.println("Propagated Error: " + errorMultipliedSigmoidDerivative);
+                //System.out.println("Propagated Error: " + errorMultipliedSigmoidDerivative);
             }
             //currentNeuron.ge
 
