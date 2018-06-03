@@ -51,7 +51,8 @@ public abstract class ActivationNeuron extends Neuron {
     public void sigmoidActivation()
     {
         //System.out.println(1 +  Math.exp(-getValueOfInputConnections() ));
-        activationValue = 1 / ( 1 +  Math.exp(-getValueOfInputConnections()  ) );
+        activationValue = 1 / ( 1 +  Math.exp(-(getValueOfInputConnections() + bias ) ) );
+
     }
 
     public double getValueOfInputConnections()
@@ -62,6 +63,7 @@ public abstract class ActivationNeuron extends Neuron {
             sum += c.getConnectionValue();
         }
         inputValue = sum;
+
         return sum;
     }
 

@@ -131,7 +131,7 @@ public class NeuralNetwork { //static?
                 System.out.println("Error: " + error);
 
             }
-            else { //TODO:? (wth?)
+            else {
                 double errorSum = 0;
 
                 for(Connection con : currentNeuron.getOutputConnections()) {
@@ -149,6 +149,8 @@ public class NeuralNetwork { //static?
                 double change = con.getSourceNeuron().getActivationValue() * currentNeuron.getError() * learningRate;
                 con.setWeight(con.getWeight() + change);
             }
+            double change = currentNeuron.getError() * learningRate;
+            currentNeuron.setBias(currentNeuron.getBias() + change);
         }
 
     }
