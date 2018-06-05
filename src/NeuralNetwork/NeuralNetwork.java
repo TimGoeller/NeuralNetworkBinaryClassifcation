@@ -71,6 +71,7 @@ public class NeuralNetwork { //static?
         System.out.println("Y: " + data.get(1));
         System.out.println();
 
+
         int currentNeuron = 0;
         for(InputNeuron neuron : inputLayer.getNeurons()) {
             neuron.setActivationValue(data.get(currentNeuron++));
@@ -92,7 +93,47 @@ public class NeuralNetwork { //static?
         }
     }
 
-    public void test() {
+    public void testNetwork()
+    {
+        int match = 0;
+        for( int counter = 0; counter < dataset.testSet.size(); counter++ )
+        {
+            if( test( dataset.testSet.get( counter ) ) ) match++;
+        }
+
+        System.out.println( match + " von " + dataset.testSet.size() + " wurden richtig bestimmt." );
+        double ratio = (double) match / (double) dataset.testSet.size();
+        System.out.println( "Korrektheitsrate: " + ratio * 100 + "%");
+    }
+
+    public boolean test(List<Double> data) {
+        int match = 0;
+        System.out.println();
+        System.out.println("New Test Pass");
+        System.out.println();
+        System.out.println("X: " + data.get(0));
+        System.out.println("Y: " + data.get(1));
+        System.out.println();
+
+        int currentNeuron = 0;
+        for(InputNeuron neuron : inputLayer.getNeurons()) {
+            neuron.setActivationValue(data.get(currentNeuron++));
+        }
+        outputLayer.getOutputNeuron().setExpectedValue(data.get(currentNeuron));
+
+        Layer currentLayer = inputLayer;
+        while(currentLayer.getNextLayer() != null) {
+            currentLayer = currentLayer.getNextLayer();
+            forwardPass(currentLayer );
+        }
+        System.out.println( "Result: " + outputLayer.getOutputNeuron().getActivationValue() );
+        System.out.println( "Real value:" + outputLayer.getOutputNeuron().getExpectedValue() );
+        //Return TRUE if guess was correct
+        if( Math.round(outputLayer.getOutputNeuron().getActivationValue()) != data.get( data.size() - 1 ) )
+        {
+            System.out.println( "ERROR404: X:" + data.get(0) + " Y:" + data.get(1) );
+        }
+        return (Math.round( outputLayer.getOutputNeuron().getActivationValue() ) == data.get( data.size() - 1 ) );
 
     }
 
@@ -129,6 +170,7 @@ public class NeuralNetwork { //static?
                 System.out.println("PREDICTION: " + currentNeuron.getActivationValue());
                 System.out.println("REAL VAL: " + ((OutputNeuron) currentNeuron).getExpectedValue());
                 System.out.println("Error: " + error);
+
 
             }
             else {
