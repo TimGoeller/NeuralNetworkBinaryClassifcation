@@ -1,3 +1,5 @@
+import NeuralNetwork.NeuralNetwork;
+import NeuralNetwork.Dataset;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +13,12 @@ import javafx.stage.Stage;
 
 public class NetworkUi extends Application
 {
+
+    public static NetworkUi currentUI;
+
+    private NeuralNetwork network;
+    private Dataset dataset;
+
     public static void main( String[] args )
     {
         launch( args );
@@ -31,6 +39,10 @@ public class NetworkUi extends Application
 
     public void start(Stage primaryStage) throws Exception{
 
+        currentUI = this;
+
+        //Dataset dataset = Dataset.readDatasetFromCSV();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
         loader.setController(new MainController());
         Parent root = loader.load();
@@ -41,5 +53,9 @@ public class NetworkUi extends Application
         primaryStage.show();
 
 
+    }
+
+    public void setDataset(Dataset dataset) {
+        this.dataset = dataset;
     }
 }
