@@ -30,9 +30,16 @@ public class NetworkUi extends Application
     }
 
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+        loader.setController(new MainController());
+        Parent root = loader.load();
         primaryStage.setTitle("Hello World");
+        //FXMLSecondaryController c = (FXMLSecondaryController) fxmlLoader.getController();
+
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+
+
     }
 }
