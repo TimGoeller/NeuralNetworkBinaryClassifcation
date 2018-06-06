@@ -18,6 +18,7 @@ public class NeuralNetwork { //static?
     private InputLayer inputLayer;
     public List<HiddenLayer> hiddenLayers = new ArrayList<HiddenLayer>();
     private OutputLayer outputLayer;
+    private double lastTestSuccessRatio;
 
     private double learningRate;
 
@@ -102,8 +103,8 @@ public class NeuralNetwork { //static?
         }
 
         System.out.println( match + " von " + dataset.testSet.size() + " wurden richtig bestimmt." );
-        double ratio = (double) match / (double) dataset.testSet.size();
-        System.out.println( "Korrektheitsrate: " + ratio * 100 + "%");
+        lastTestSuccessRatio = (double) match / (double) dataset.testSet.size();
+        System.out.println( "Korrektheitsrate: " + lastTestSuccessRatio * 100 + "%");
     }
 
     public boolean test(List<Double> data) {
@@ -227,6 +228,9 @@ public class NeuralNetwork { //static?
         };
     }
 
+    public double getLastTestSuccessRatio() {
+        return lastTestSuccessRatio;
+    }
 
 
 }

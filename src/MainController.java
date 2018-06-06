@@ -1,11 +1,9 @@
 import NeuralNetwork.Dataset;
+import NeuralNetwork.NeuralNetwork;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -30,7 +28,19 @@ public class MainController {
     private TextField neuronCountTextField;
 
     @FXML
+    private TextField epochsTestField;
+
+    @FXML
     private ListView hiddenLayerListView;
+
+    @FXML
+    private TitledPane testingPane;
+
+    @FXML
+    private Button datasetTestingButton;
+
+    @FXML
+    private Label successPercentageLabel;
 
     public Stage stage;
     protected List<Integer> hiddenLayerNeuronCounts= new ArrayList<Integer>();
@@ -87,7 +97,18 @@ public class MainController {
         catch (Exception e) {
             neuronCountTextField.setText("");
         }
+    }
 
+    @FXML
+    protected void validateEpochsIntInput() {
+
+        String currentInput = epochsTestField.getText();
+        try{
+            Integer.parseInt(currentInput);
+        }
+        catch (Exception e) {
+            epochsTestField.setText("");
+        }
     }
 
     @FXML
@@ -96,8 +117,6 @@ public class MainController {
         if(neuronCountTextField.getText() != "") {
             hiddenLayerNeuronCounts.add(Integer.parseInt(neuronCountTextField.getText()));
         }
-
-
         updateHiddenLayerList();
     }
 
@@ -109,6 +128,57 @@ public class MainController {
             hiddenLayerNeuronCounts.remove(selectedIndex);
             updateHiddenLayerList();
         }
+    }
+
+    @FXML
+    protected void trainNetwork() {
+
+        Dataset dataset = NetworkUi.currentUI.getDataset();
+
+        if(dataset == null) {
+            showTrainingErrorPopup("No dataset was initialized!");
+        }
+        else if(learningRateTextField.getText().equals("")) {
+            showTrainingErrorPopup("No learning rate was specified!");
+        }
+        else if(epochsTestField.getText().equals("")) {
+            showTrainingErrorPopup("No epochs were specified!");
+        }
+        else {
+            double learningRate = Double.parseDouble((learningRateTextField.getText()));
+            NeuralNetwork network = new NeuralNetwork(dataset.getInputColumnCount(), dataset, learningRate);
+            NetworkUi.currentUI.setNetwork(network);
+
+            for(int neuronCount : hiddenLayerNeuronCounts) {
+                network.addHiddenLayer(neuronCount);
+            }
+            network.trainNetwork(Integer.parseInt(epochsTestField.getText()));
+            testingPane.setDisable(false);
+            datasetTestingButton.setText("Train with " + dataset.getTestSet().size() + " items");
+
+        }
+
+        //else if()
+
+        //NeuralNetwork network = new NeuralNetwork();
+    }
+
+    @FXML
+    protected void testNetwork() {
+
+        //System.out.println(NetworkUi.currentUI);
+        //System.out.println(NetworkUi.currentUI.getNetwork());
+        NetworkUi.currentUI.getNetwork().testNetwork();
+
+        successPercentageLabel.setText("Success percentage: " + NetworkUi.currentUI.getNetwork().getLastTestSuccessRatio() * 100);
+    }
+
+    private void showTrainingErrorPopup(String error) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Training error");
+        alert.setContentText(error);
+        alert.showAndWait();
     }
 
     private void updateHiddenLayerList() {

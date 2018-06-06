@@ -12,6 +12,8 @@ public class Dataset {
     List<List<Double>> trainingSet;
     List<List<Double>> testSet;
 
+    private int inputColumnCount;
+
     private Dataset(List<List<Double>> trainingSet, List<List<Double>> testSet) {
 
         this.trainingSet = trainingSet;
@@ -50,6 +52,29 @@ public class Dataset {
         List<List<Double>> trainingSet = data.subList(0, data.size() - splitAt);
         List<List<Double>> testSet = data.subList( data.size() - splitAt, data.size());
 
-        return new Dataset(trainingSet, testSet);
+        Dataset newSet = new Dataset(trainingSet, testSet);
+        newSet.inputColumnCount = data.get(0).size() - 1;
+
+        return newSet;
+    }
+
+    public int getInputColumnCount() {
+        return inputColumnCount;
+    }
+
+    public List<List<Double>> getTrainingSet() {
+        return trainingSet;
+    }
+
+    public void setTrainingSet(List<List<Double>> trainingSet) {
+        this.trainingSet = trainingSet;
+    }
+
+    public List<List<Double>> getTestSet() {
+        return testSet;
+    }
+
+    public void setTestSet(List<List<Double>> testSet) {
+        this.testSet = testSet;
     }
 }

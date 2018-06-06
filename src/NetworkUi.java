@@ -58,4 +58,16 @@ public class NetworkUi extends Application
     public void setDataset(Dataset dataset) {
         this.dataset = dataset;
     }
+
+    public Dataset getDataset() {
+        return dataset;
+    }
+
+    public NeuralNetwork getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(NeuralNetwork network) {
+        this.network = network;
+    }
 }
