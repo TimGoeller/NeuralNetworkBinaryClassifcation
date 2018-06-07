@@ -44,14 +44,16 @@ public class NetworkUi extends Application
         //Dataset dataset = Dataset.readDatasetFromCSV();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+        MainController controller = new MainController();
         loader.setController(new MainController());
         Parent root = loader.load();
+
         primaryStage.setTitle("Hello World");
         //FXMLSecondaryController c = (FXMLSecondaryController) fxmlLoader.getController();
 
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-
+        controller.initializeFormatting();
 
     }
 

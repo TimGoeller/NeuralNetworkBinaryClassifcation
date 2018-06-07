@@ -12,6 +12,7 @@ import javax.xml.crypto.Data;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 public class MainController {
 
@@ -45,9 +46,36 @@ public class MainController {
     public Stage stage;
     protected List<Integer> hiddenLayerNeuronCounts= new ArrayList<Integer>();
 
+    public void initializeFormatting() {
+
+    }
+
+    @FXML
+    public void initialize() {
+        UnaryOperator<TextFormatter.Change> integerFilter = change -> {
+            String input = change.getText();
+            if (input.matches("[0-9]*")) {
+                return change;
+            }
+            return null;
+        };
+
+        neuronCountTextField.setTextFormatter(new TextFormatter<String>(integerFilter));
+        epochsTestField.setTextFormatter(new TextFormatter<String>(integerFilter));
+
+        UnaryOperator<TextFormatter.Change> doubleFilter = change -> {
+            String input = change.getText();
+            if (input.matches("-?(([1-9][0-9]*)|0)?(\\.[0-9]*)?")) {
+                return change;
+            }
+            return null;
+        };
+
+        learningRateTextField.setTextFormatter(new TextFormatter<String>(doubleFilter));
+    }
+
     @FXML
     protected void openCSVPopup() {
-        System.out.println("OPEN");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select CSV file");
 
@@ -72,43 +100,6 @@ public class MainController {
             filePathLabel.setText("Error");
         }
 
-    }
-
-    @FXML
-    protected void validateLearningRateNumberInput() {
-
-        String currentInput = learningRateTextField.getText();
-        try{
-            Double.parseDouble(currentInput);
-        }
-        catch (Exception e) {
-            learningRateTextField.setText("");
-        }
-
-    }
-
-    @FXML
-    protected void validateNeuronCountNumberInput() {
-
-        String currentInput = neuronCountTextField.getText();
-        try{
-            Integer.parseInt(currentInput);
-        }
-        catch (Exception e) {
-            neuronCountTextField.setText("");
-        }
-    }
-
-    @FXML
-    protected void validateEpochsIntInput() {
-
-        String currentInput = epochsTestField.getText();
-        try{
-            Integer.parseInt(currentInput);
-        }
-        catch (Exception e) {
-            epochsTestField.setText("");
-        }
     }
 
     @FXML
@@ -146,12 +137,15 @@ public class MainController {
         }
         else {
             double learningRate = Double.parseDouble((learningRateTextField.getText()));
+            System.out.println(learningRate);
+            System.out.println(Integer.parseInt(epochsTestField.getText()));
             NeuralNetwork network = new NeuralNetwork(dataset.getInputColumnCount(), dataset, learningRate);
             NetworkUi.currentUI.setNetwork(network);
 
             for(int neuronCount : hiddenLayerNeuronCounts) {
                 network.addHiddenLayer(neuronCount);
             }
+            network.initializeLayers();
             network.trainNetwork(Integer.parseInt(epochsTestField.getText()));
             testingPane.setDisable(false);
             datasetTestingButton.setText("Train with " + dataset.getTestSet().size() + " items");
