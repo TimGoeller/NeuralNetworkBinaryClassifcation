@@ -10,7 +10,6 @@ public class App {
 
     public static void main(String args[]) {
 
-        Dataset d = Dataset.readDatasetFromCSV("Admission_Dataset_Getrennt.csv");
         NeuralNetwork network = new NeuralNetwork(2, d, 0.05);
 
         network.addHiddenLayer(4);

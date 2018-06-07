@@ -20,7 +20,7 @@ public class Dataset {
         this.testSet = testSet;
     }
 
-    public static Dataset readDatasetFromCSV(String csvPath) {
+    public static Dataset readDatasetFromCSV(String csvPath, double testingPercentage) {
 
         List<List<Double>> data = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class Dataset {
             System.out.println( "Could not open file!" );
         }
 
-        int splitAt = (int)(data.size() * 0.2);
+        int splitAt = (int)(data.size() * testingPercentage);
 
         List<List<Double>> trainingSet = data.subList(0, data.size() - splitAt);
         List<List<Double>> testSet = data.subList( data.size() - splitAt, data.size());

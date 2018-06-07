@@ -43,6 +43,9 @@ public class MainController {
     @FXML
     private Label successPercentageLabel;
 
+    @FXML
+    private Slider testPercentageSlider;
+
     public Stage stage;
     protected List<Integer> hiddenLayerNeuronCounts= new ArrayList<Integer>();
 
@@ -83,9 +86,12 @@ public class MainController {
         fileChooser.getExtensionFilters().add(extFilter);
 
         File file = fileChooser.showOpenDialog(rootNode.getScene().getWindow());
+
+        int testDataPercentage = (int)testPercentageSlider.getValue();
+
         if (file != null) {
             filePathLabel.setTextFill(Color.web("#000000"));
-            filePathLabel.setText(file.getPath());
+            filePathLabel.setText("Loaded with " + testDataPercentage + "% test data: " +  file.getPath());
         }
         else {
             filePathLabel.setTextFill(Color.web("#000000"));
@@ -93,7 +99,7 @@ public class MainController {
         }
 
         try{
-            NetworkUi.currentUI.setDataset(Dataset.readDatasetFromCSV(file.getPath()));
+            NetworkUi.currentUI.setDataset(Dataset.readDatasetFromCSV(file.getPath(), testDataPercentage / 100));
         }
         catch (Exception e) {
             filePathLabel.setTextFill(Color.web("#ff6347"));
@@ -137,8 +143,6 @@ public class MainController {
         }
         else {
             double learningRate = Double.parseDouble((learningRateTextField.getText()));
-            System.out.println(learningRate);
-            System.out.println(Integer.parseInt(epochsTestField.getText()));
             NeuralNetwork network = new NeuralNetwork(dataset.getInputColumnCount(), dataset, learningRate);
             NetworkUi.currentUI.setNetwork(network);
 
