@@ -24,9 +24,9 @@ public class NeuralNetwork { //static?
 
     private Dataset dataset;
 
-    public NeuralNetwork(int inputNeuronCount, Dataset dataset, double learningRate) {
+    public NeuralNetwork(Dataset dataset, double learningRate) {
 
-        inputLayer = new InputLayer(inputNeuronCount);
+        inputLayer = new InputLayer(dataset.getInputColumnCount());
         outputLayer = new OutputLayer();
         inputLayer.setNextLayer(outputLayer);
         outputLayer.setPreviousLayer(inputLayer);
@@ -61,16 +61,17 @@ public class NeuralNetwork { //static?
 
             dataset.trainingSet.forEach(data -> train(data));
         }
+        System.out.println("FEDDISCH!");
     }
 
     private void train(List<Double> data) {
 
-        System.out.println();
+        /*System.out.println();
         System.out.println("New Training Pass");
         System.out.println();
         System.out.println("X: " + data.get(0));
         System.out.println("Y: " + data.get(1));
-        System.out.println();
+        System.out.println();*/
 
 
         int currentNeuron = 0;
@@ -92,6 +93,8 @@ public class NeuralNetwork { //static?
             backwardPass(currentLayer);
             currentLayer = currentLayer.getPreviousLayer();
         }
+
+
     }
 
     public void testNetwork()
@@ -104,17 +107,17 @@ public class NeuralNetwork { //static?
 
         System.out.println( match + " von " + dataset.testSet.size() + " wurden richtig bestimmt." );
         lastTestSuccessRatio = (double) match / (double) dataset.testSet.size();
-        System.out.println( "Korrektheitsrate: " + lastTestSuccessRatio * 100 + "%");
+        //System.out.println( "Korrektheitsrate: " + lastTestSuccessRatio * 100 + "%");
     }
 
     public boolean test(List<Double> data) {
         int match = 0;
-        System.out.println();
+        /*System.out.println();
         System.out.println("New Test Pass");
         System.out.println();
         System.out.println("X: " + data.get(0));
         System.out.println("Y: " + data.get(1));
-        System.out.println();
+        System.out.println();*/
 
         int currentNeuron = 0;
         for(InputNeuron neuron : inputLayer.getNeurons()) {
@@ -127,12 +130,12 @@ public class NeuralNetwork { //static?
             currentLayer = currentLayer.getNextLayer();
             forwardPass(currentLayer );
         }
-        System.out.println( "Result: " + outputLayer.getOutputNeuron().getActivationValue() );
-        System.out.println( "Real value:" + outputLayer.getOutputNeuron().getExpectedValue() );
+        /*System.out.println( "Result: " + outputLayer.getOutputNeuron().getActivationValue() );
+        System.out.println( "Real value:" + outputLayer.getOutputNeuron().getExpectedValue() );*/
         //Return TRUE if guess was correct
         if( Math.round(outputLayer.getOutputNeuron().getActivationValue()) != data.get( data.size() - 1 ) )
         {
-            System.out.println( "ERROR404: X:" + data.get(0) + " Y:" + data.get(1) );
+           /* System.out.println( "ERROR404: X:" + data.get(0) + " Y:" + data.get(1) );*/
         }
         return (Math.round( outputLayer.getOutputNeuron().getActivationValue() ) == data.get( data.size() - 1 ) );
 
@@ -168,9 +171,9 @@ public class NeuralNetwork { //static?
                 currentNeuron.setError(error);
 
 
-                System.out.println("PREDICTION: " + currentNeuron.getActivationValue());
+                /*System.out.println("PREDICTION: " + currentNeuron.getActivationValue());
                 System.out.println("REAL VAL: " + ((OutputNeuron) currentNeuron).getExpectedValue());
-                System.out.println("Error: " + error);
+                System.out.println("Error: " + error);*/
 
 
             }

@@ -35,7 +35,7 @@ public class MainController {
     private ListView hiddenLayerListView;
 
     @FXML
-    private TitledPane testingPane;
+    private Tab testingTab;
 
     @FXML
     private Button datasetTestingButton;
@@ -99,7 +99,7 @@ public class MainController {
         }
 
         try{
-            NetworkUi.currentUI.setDataset(Dataset.readDatasetFromCSV(file.getPath(), testDataPercentage / 100));
+            NetworkUi.currentUI.setDataset(Dataset.readDatasetFromCSV(file.getPath(), testDataPercentage / 100.0f));
         }
         catch (Exception e) {
             filePathLabel.setTextFill(Color.web("#ff6347"));
@@ -143,7 +143,7 @@ public class MainController {
         }
         else {
             double learningRate = Double.parseDouble((learningRateTextField.getText()));
-            NeuralNetwork network = new NeuralNetwork(dataset.getInputColumnCount(), dataset, learningRate);
+            NeuralNetwork network = new NeuralNetwork(dataset, learningRate);
             NetworkUi.currentUI.setNetwork(network);
 
             for(int neuronCount : hiddenLayerNeuronCounts) {
@@ -151,7 +151,7 @@ public class MainController {
             }
             network.initializeLayers();
             network.trainNetwork(Integer.parseInt(epochsTestField.getText()));
-            testingPane.setDisable(false);
+            testingTab.setDisable(false);
             datasetTestingButton.setText("Train with " + dataset.getTestSet().size() + " items");
 
         }

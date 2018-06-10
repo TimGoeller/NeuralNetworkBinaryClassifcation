@@ -11,7 +11,6 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -20,102 +19,117 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TabPane fx:id="rootNode" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane fx:id="rootNode" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <tabs>
-      <Tab text="Setup Network">
+      <Tab text="Network Settings">
          <content>
             <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
                <children>
-                  <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <GridPane alignment="CENTER" hgap="15.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="150.0" prefHeight="398.0" prefWidth="560.0" style="-fx-pref-height: 20em;" vgap="5.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="338.0" minWidth="10.0" prefWidth="250.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="494.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="274.0" minHeight="10.0" prefHeight="34.3333371480306" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="532.0000057220459" minHeight="10.0" prefHeight="42.33332951863606" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="532.0000057220459" minHeight="7.0" prefHeight="46.00001017252603" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="558.9999771118164" minHeight="0.0" prefHeight="52.66664632161459" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="552.9999694824219" minHeight="0.0" prefHeight="138.66665649414062" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="354.9999694824219" minHeight="10.0" prefHeight="62.00001017252606" vgrow="SOMETIMES" />
+                    </rowConstraints>
                      <children>
-                        <TitledPane animated="false" collapsible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="325.0" prefWidth="600.0" text="Network Settings" VBox.vgrow="ALWAYS">
-                           <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0">
-                                 <children>
-                                    <GridPane hgap="15.0" layoutX="27.6" layoutY="19.6" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="150.0" prefHeight="398.0" prefWidth="560.0" style="-fx-pref-height: 20em;" vgap="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="338.0" minWidth="10.0" prefWidth="250.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="494.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints maxHeight="274.0" minHeight="10.0" prefHeight="34.3333371480306" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="532.0000057220459" minHeight="10.0" prefHeight="42.33332951863606" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="532.0000057220459" minHeight="7.0" prefHeight="46.00001017252603" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="558.9999771118164" minHeight="0.0" prefHeight="52.66664632161459" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="552.9999694824219" minHeight="0.0" prefHeight="138.66665649414062" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="354.9999694824219" minHeight="10.0" prefHeight="62.00001017252606" vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                       <children>
-                                          <Button mnemonicParsing="false" onMouseClicked="#openCSVPopup" prefWidth="150.0" text="Load CSV" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
-                                          <Label fx:id="filePathLabel" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="0.0" text="No dataset loaded" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                                          <Label prefHeight="27.0" prefWidth="181.0" text="Learning rate (µ):" GridPane.rowIndex="3" />
-                                          <TextField fx:id="learningRateTextField" maxWidth="1.7976931348623157E308" prefHeight="11.0" prefWidth="604.0" text="0.05" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
-                                          <Label prefHeight="27.0" prefWidth="149.0" text="Test percentage:" />
-                                          <Slider fx:id="testPercentageSlider" majorTickUnit="10.0" maxWidth="1.7976931348623157E308" minorTickCount="1" prefHeight="58.0" prefWidth="504.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                                          <ListView fx:id="hiddenLayerListView" prefHeight="170.0" prefWidth="247.0" GridPane.rowIndex="4" />
-                                          <VBox prefHeight="190.0" prefWidth="414.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
-                                             <children>
-                                                <Label prefHeight="27.0" prefWidth="127.0" text="Neuron count:">
-                                                   <VBox.margin>
-                                                      <Insets bottom="10.0" />
-                                                   </VBox.margin>
-                                                </Label>
-                                                <TextField fx:id="neuronCountTextField" text="5">
-                                                   <VBox.margin>
-                                                      <Insets bottom="15.0" />
-                                                   </VBox.margin>
-                                                </TextField>
-                                                <Button mnemonicParsing="false" onMouseClicked="#addHiddenLayerToList" prefHeight="12.0" prefWidth="224.0" text="Add hidden layer">
-                                                   <VBox.margin>
-                                                      <Insets bottom="10.0" />
-                                                   </VBox.margin>
-                                                </Button>
-                                                <Button mnemonicParsing="false" onMouseClicked="#removeHiddenLayerFromList" prefHeight="12.0" prefWidth="224.0" text="Remove hidden layer" />
-                                             </children>
-                                          </VBox>
-                                          <Button maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="0.0" mnemonicParsing="false" onMouseClicked="#trainNetwork" prefHeight="0.0" prefWidth="579.0" style="-fx-background-color: FF530D;" text="Train neural network" textFill="WHITE" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5">
-                                             <font>
-                                                <Font name="System Bold" size="12.0" />
-                                             </font>
-                                             <GridPane.margin>
-                                                <Insets />
-                                             </GridPane.margin>
-                                          </Button>
-                                          <Label text="Epochs:" GridPane.rowIndex="2" />
-                                          <TextField fx:id="epochsTestField" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="633.0" text="1000" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                       </children>
-                                    </GridPane>
-                                 </children></AnchorPane>
-                           </content>
-                        </TitledPane>
-                        <TitledPane fx:id="testingPane" animated="false" collapsible="false" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Testing" VBox.vgrow="ALWAYS">
-                           <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0">
-                                 <children>
-                                    <HBox layoutX="209.0" layoutY="14.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <children>
-                                          <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
-                                             <children>
-                                                <Button fx:id="datasetTestingButton" mnemonicParsing="false" onMouseClicked="#testNetwork" text="Button" />
-                                                <Label fx:id="successPercentageLabel" text="Success percentage: " />
-                                             </children>
-                                          </VBox>
-                                          <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
-                                       </children>
-                                    </HBox>
-                                 </children></AnchorPane>
-                           </content>
-                           <VBox.margin>
+                        <Button mnemonicParsing="false" onMouseClicked="#openCSVPopup" prefWidth="150.0" text="Load CSV" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+                        <Label fx:id="filePathLabel" maxWidth="1.7976931348623157E308" prefHeight="27.0" prefWidth="0.0" text="No dataset loaded" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                        <Label prefHeight="27.0" prefWidth="181.0" text="Learning rate (µ):" GridPane.rowIndex="3" />
+                        <TextField fx:id="learningRateTextField" maxWidth="1.7976931348623157E308" prefHeight="11.0" prefWidth="604.0" text="0.05" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+                        <Label prefHeight="27.0" prefWidth="149.0" text="Test percentage:" />
+                        <Slider fx:id="testPercentageSlider" majorTickUnit="10.0" maxWidth="1.7976931348623157E308" minorTickCount="1" prefHeight="58.0" prefWidth="504.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="20.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+                        <ListView fx:id="hiddenLayerListView" prefHeight="170.0" prefWidth="247.0" GridPane.rowIndex="4" />
+                        <VBox prefHeight="190.0" prefWidth="414.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="127.0" text="Neuron count:">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <TextField fx:id="neuronCountTextField" text="5">
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <Button mnemonicParsing="false" onMouseClicked="#addHiddenLayerToList" prefHeight="12.0" prefWidth="224.0" text="Add hidden layer">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onMouseClicked="#removeHiddenLayerFromList" prefHeight="12.0" prefWidth="224.0" text="Remove hidden layer" />
+                           </children>
+                        </VBox>
+                        <Button maxHeight="30.0" maxWidth="1.7976931348623157E308" minHeight="0.0" mnemonicParsing="false" onMouseClicked="#trainNetwork" prefHeight="0.0" prefWidth="579.0" style="-fx-background-color: FF530D;" text="Train neural network" textFill="WHITE" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <GridPane.margin>
                               <Insets />
-                           </VBox.margin>
-                        </TitledPane>
+                           </GridPane.margin>
+                        </Button>
+                        <Label text="Epochs:" GridPane.rowIndex="2" />
+                        <TextField fx:id="epochsTestField" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="633.0" text="1000" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
-                  </VBox>
+                  </GridPane>
                </children>
             </AnchorPane>
          </content>
       </Tab>
-      <Tab text="Diagrams">
+      <Tab fx:id="testingTab" text="Testing">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Button fx:id="datasetTestingButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#testNetwork" prefHeight="10.0" prefWidth="140.0" style="-fx-background-color: #3AC924;" text="Test" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Label fx:id="successCountLabel" text="Success: ">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="failedCountLabel" text="Failed:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="successPercentageLabel" text="Success percentage: ">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab disable="true" text="Diagrams">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
