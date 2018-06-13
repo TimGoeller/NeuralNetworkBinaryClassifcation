@@ -144,14 +144,22 @@ public class MainController {
         else {
             double learningRate = Double.parseDouble((learningRateTextField.getText()));
             NeuralNetwork network = new NeuralNetwork(dataset, learningRate);
+            NeuralNetwork shadowNetwork = new NeuralNetwork(dataset, learningRate);
+
             NetworkUi.currentUI.setNetwork(network);
+            NetworkUi.currentUI.setShadowNetwork(shadowNetwork);
 
             for(int neuronCount : hiddenLayerNeuronCounts) {
                 network.addHiddenLayer(neuronCount);
+                shadowNetwork.addHiddenLayer( neuronCount );
             }
             network.initializeLayers();
+            shadowNetwork.initializeLayers();
+            /* TODO:
+            Hier ggf. Zufallswerte vom "echten" Netz ins shadowNetwork kopieren? */
 
             network.trainNetwork(Integer.parseInt(epochsTestField.getText()));
+            shadowNetwork.trainNetwork(Integer.parseInt(epochsTestField.getText()));
             testingTab.setDisable(false);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

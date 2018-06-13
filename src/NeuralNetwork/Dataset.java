@@ -45,7 +45,10 @@ public class Dataset {
         catch (Exception e)
         {
             System.out.println( "Could not open file!" );
+            return null;
         }
+
+        normalizeValuesInDataset( data );
 
         int splitAt = (int)(data.size() * testingPercentage);
 
@@ -56,6 +59,27 @@ public class Dataset {
         newSet.inputColumnCount = data.get(0).size() - 1;
 
         return newSet;
+    }
+
+    private static void normalizeValuesInDataset(List<List<Double>> data)
+    {
+        int columnCount = data.get(0).size();
+        int column = 0;
+        while(column < columnCount)
+        {
+            double maxima = 0;
+            for (List<Double> d : data) {
+                maxima = d.get(column) > maxima ? d.get(column) : maxima;
+            }
+
+            if( maxima > 1 )
+            {
+                for (List<Double> d : data) {
+                   d.set( column, d.get( column ) / maxima );
+                }
+            }
+            column++;
+        }
     }
 
     public int getInputColumnCount() {
