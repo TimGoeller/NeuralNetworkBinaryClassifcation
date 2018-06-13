@@ -61,7 +61,7 @@ public class NeuralNetwork { //static?
 
             dataset.trainingSet.forEach(data -> train(data));
         }
-        System.out.println("FEDDISCH!");
+
     }
 
     private void train(List<Double> data) {
