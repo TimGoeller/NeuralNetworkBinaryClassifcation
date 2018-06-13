@@ -150,9 +150,17 @@ public class MainController {
                 network.addHiddenLayer(neuronCount);
             }
             network.initializeLayers();
+
             network.trainNetwork(Integer.parseInt(epochsTestField.getText()));
             testingTab.setDisable(false);
-            datasetTestingButton.setText("Train with " + dataset.getTestSet().size() + " items");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Training information");
+            alert.setHeaderText("Training complete");
+            alert.setContentText("Training complete");
+            alert.showAndWait();
+
+            datasetTestingButton.setText("Test with " + dataset.getTestSet().size() + " items");
 
         }
 
