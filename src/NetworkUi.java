@@ -48,7 +48,7 @@ public class NetworkUi extends Application
         loader.setController(new MainController());
         Parent root = loader.load();
 
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("FROZEN - Neural Network Binary Classification");
         //FXMLSecondaryController c = (FXMLSecondaryController) fxmlLoader.getController();
 
         primaryStage.setScene(new Scene(root));
