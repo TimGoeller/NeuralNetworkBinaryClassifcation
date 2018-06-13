@@ -17,7 +17,6 @@ public class NetworkUi extends Application
     public static NetworkUi currentUI;
 
     private NeuralNetwork network;
-    private NeuralNetwork shadowNetwork;
     private Dataset dataset;
 
     public static void main( String[] args )
@@ -72,16 +71,7 @@ public class NetworkUi extends Application
         return network;
     }
 
-    public void setNetwork(NeuralNetwork shadowNetwork) {
-        this.shadowNetwork = shadowNetwork;
-    }
-
-    /* Shadow Network */
-    public NeuralNetwork getShadowNetwork() {
-        return network;
-    }
-
-    public void setShadowNetwork(NeuralNetwork shadowNetwork) {
-        this.shadowNetwork = shadowNetwork;
+    public void setNetwork(NeuralNetwork network) {
+        this.network = network;
     }
 }

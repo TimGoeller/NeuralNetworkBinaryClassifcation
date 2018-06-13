@@ -19,10 +19,9 @@ public class NeuralNetwork { //static?
     public List<HiddenLayer> hiddenLayers = new ArrayList<HiddenLayer>();
     private OutputLayer outputLayer;
     private double lastTestSuccessRatio;
-
     private double learningRate;
-
     private Dataset dataset;
+    private ShadowNetwork shadowNetwork;
 
     public NeuralNetwork(Dataset dataset, double learningRate) {
 
@@ -208,6 +207,12 @@ public class NeuralNetwork { //static?
         while(layerIt.hasNext()) {
             layerIt.next().initializeLayer();
         }
+
+        List<Integer> hiddenLayerNeuronCount = new ArrayList<Integer>();
+        for ( HiddenLayer layer : hiddenLayers ) hiddenLayerNeuronCount.add(layer.getNeurons().size());
+
+        shadowNetwork = new ShadowNetwork(inputLayer.getNeurons().size(), hiddenLayerNeuronCount);
+        shadowNetwork.initializeLayers();
     }
 
     public Iterator<Layer> getLayersAsIterator() {
@@ -235,5 +240,13 @@ public class NeuralNetwork { //static?
         return lastTestSuccessRatio;
     }
 
+    private void initializeShadowNetwork()
+    {
 
+    }
+
+    private void synchronizeNetwork()
+    {
+
+    }
 }
