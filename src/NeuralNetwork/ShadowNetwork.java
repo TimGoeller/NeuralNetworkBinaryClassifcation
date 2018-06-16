@@ -12,10 +12,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ShadowNetwork
-{
+public class ShadowNetwork {
     private InputLayer inputLayer;
-    public  List<HiddenLayer> hiddenLayers = new ArrayList<HiddenLayer>();
+    public List<HiddenLayer> hiddenLayers = new ArrayList<HiddenLayer>();
     private OutputLayer outputLayer;
 
     public ShadowNetwork(int inputLayerNeuronCount, List<Integer> hiddenLayerNeuronCount)
@@ -23,44 +22,46 @@ public class ShadowNetwork
         inputLayer = new InputLayer(inputLayerNeuronCount);
         Layer prevLayer = inputLayer;
 
-        for ( int hiddenLayerNeuronCounter : hiddenLayerNeuronCount )
-        {
-            HiddenLayer newHiddenLayer = new HiddenLayer( hiddenLayerNeuronCounter );
-            prevLayer.setNextLayer( newHiddenLayer );
-            newHiddenLayer.setPreviousLayer( prevLayer );
+        for (int hiddenLayerNeuronCounter : hiddenLayerNeuronCount) {
+            HiddenLayer newHiddenLayer = new HiddenLayer(hiddenLayerNeuronCounter);
+            prevLayer.setNextLayer(newHiddenLayer);
+            newHiddenLayer.setPreviousLayer(prevLayer);
             prevLayer = newHiddenLayer;
-            hiddenLayers.add( newHiddenLayer );
+            hiddenLayers.add(newHiddenLayer);
         }
 
         outputLayer = new OutputLayer();
-        outputLayer.setPreviousLayer( prevLayer );
-        prevLayer.setNextLayer( outputLayer );
+        outputLayer.setPreviousLayer(prevLayer);
+        prevLayer.setNextLayer(outputLayer);
 
         initializeLayers();
     }
 
-    public void initializeLayers() {
-
+    public void initializeLayers()
+    {
         Iterator<Layer> layerIt = getLayersAsIterator();
 
-        while(layerIt.hasNext()) {
+        while (layerIt.hasNext()) {
             layerIt.next().initializeLayer();
         }
     }
 
-    public Iterator<Layer> getLayersAsIterator() {
+    public Iterator<Layer> getLayersAsIterator()
+    {
         return new Iterator<Layer>() {
 
             private Layer currentLayer;
 
             @Override
-            public boolean hasNext() {
+            public boolean hasNext()
+            {
                 return !(currentLayer instanceof OutputLayer);
             }
 
             @Override
-            public Layer next() {
-                if(currentLayer == null)
+            public Layer next()
+            {
+                if (currentLayer == null)
                     currentLayer = inputLayer;
                 else
                     currentLayer = currentLayer.getNextLayer();
@@ -74,21 +75,17 @@ public class ShadowNetwork
         Iterator<Layer> iterator = network.getLayersAsIterator();
         Iterator<Layer> shadowIterator = getLayersAsIterator();
 
-        while( iterator.hasNext() )
-        {
+        while (iterator.hasNext()) {
             int neuronIndex = 0;
             Layer shadowLayer = shadowIterator.next();
-            for(Neuron e : (List<Neuron>) iterator.next().getNeurons() )
-            {
+            for (Neuron e : (List<Neuron>) iterator.next().getNeurons()) {
                 int connectionIndex = 0;
-                for (Connection c : e.getOutputConnections())
-                {
-                    ((Neuron)shadowLayer.getNeurons().get( neuronIndex )).getOutputConnections().get( connectionIndex ).setWeight( c.getWeight() );
+                for (Connection c : e.getOutputConnections()) {
+                    ((Neuron) shadowLayer.getNeurons().get(neuronIndex)).getOutputConnections().get(connectionIndex).setWeight(c.getWeight());
                     connectionIndex++;
                 }
-                if(e instanceof ActivationNeuron)
-                {
-                    ((ActivationNeuron)shadowLayer.getNeurons().get( neuronIndex )).setBias( ((ActivationNeuron) e).getBias() );
+                if (e instanceof ActivationNeuron) {
+                    ((ActivationNeuron) shadowLayer.getNeurons().get(neuronIndex)).setBias(((ActivationNeuron) e).getBias());
                 }
                 neuronIndex++;
             }

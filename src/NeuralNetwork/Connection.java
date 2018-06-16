@@ -9,13 +9,32 @@ public class Connection {
     private Neuron destinationNeuron;
 
     private double weight = Math.random();
+    private double gradientCheckingWeight;
 
-    public double getWeight() {
+    public double getWeight()
+    {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public double getGradientCheckingWeight()
+    {
+        return gradientCheckingWeight;
+    }
+
+    public void setWeight(double weight)
+    {
         this.weight = weight;
+        this.gradientCheckingWeight = weight;
+    }
+
+    public void resetGradientCheckingWeight()
+    {
+        this.gradientCheckingWeight = weight;
+    }
+
+    public void setGradientCheckingWeight(double weight)
+    {
+        this.gradientCheckingWeight = weight;
     }
 
     public Connection(Neuron sourceNeuron, Neuron destinationNeuron)
@@ -26,20 +45,22 @@ public class Connection {
 
     public Connection(Neuron sourceNeuron, Neuron destinationNeuron, double weight)
     {
-        this( sourceNeuron, destinationNeuron );
+        this(sourceNeuron, destinationNeuron);
         this.weight = weight;
     }
 
     public double getConnectionValue()
     {
-        return (sourceNeuron).getActivationValue()* weight;
+        return (sourceNeuron).getActivationValue() * weight;
     }
 
-    public Neuron getSourceNeuron() {
+    public Neuron getSourceNeuron()
+    {
         return sourceNeuron;
     }
 
-    public Neuron getDestinationNeuron() {
+    public Neuron getDestinationNeuron()
+    {
         return destinationNeuron;
     }
 }

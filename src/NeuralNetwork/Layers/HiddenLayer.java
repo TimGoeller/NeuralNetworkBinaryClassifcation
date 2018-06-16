@@ -9,19 +9,19 @@ import NeuralNetwork.Neurons.Neuron;
 
 public class HiddenLayer extends Layer<HiddenNeuron> {
 
-
-
-    public HiddenLayer(int neuronCount) {
-        for(int i = 0; i < neuronCount; i++) {
+    public HiddenLayer(int neuronCount)
+    {
+        for (int i = 0; i < neuronCount; i++) {
             neurons.add(new HiddenNeuron());
         }
     }
 
     @Override
-    public void initializeLayer() {
-        for(HiddenNeuron neuron : neurons) {
+    public void initializeLayer()
+    {
+        for (HiddenNeuron neuron : neurons) {
             List<Connection> hiddenNeuronConnections = new ArrayList<Connection>();
-            super.getPreviousLayer().getNeuronsAsIterator().forEachRemaining(previousNeuron -> hiddenNeuronConnections.add(new Connection((Neuron)previousNeuron, neuron)));
+            super.getPreviousLayer().getNeuronsAsIterator().forEachRemaining(previousNeuron -> hiddenNeuronConnections.add(new Connection((Neuron) previousNeuron, neuron)));
             neuron.setConnections(hiddenNeuronConnections);
 
             neuron.getInputConnections().forEach(connection -> connection.getSourceNeuron().addOutputConnection(connection));

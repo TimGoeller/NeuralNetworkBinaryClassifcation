@@ -47,7 +47,7 @@ public class MainController {
     private Slider testPercentageSlider;
 
     public Stage stage;
-    protected List<Integer> hiddenLayerNeuronCounts= new ArrayList<Integer>();
+    protected List<Integer> hiddenLayerNeuronCounts = new ArrayList<Integer>();
 
     public void initializeFormatting() {
 
@@ -87,21 +87,19 @@ public class MainController {
 
         File file = fileChooser.showOpenDialog(rootNode.getScene().getWindow());
 
-        int testDataPercentage = (int)testPercentageSlider.getValue();
+        int testDataPercentage = (int) testPercentageSlider.getValue();
 
         if (file != null) {
             filePathLabel.setTextFill(Color.web("#000000"));
-            filePathLabel.setText("Loaded with " + testDataPercentage + "% test data: " +  file.getPath());
-        }
-        else {
+            filePathLabel.setText("Loaded with " + testDataPercentage + "% test data: " + file.getPath());
+        } else {
             filePathLabel.setTextFill(Color.web("#000000"));
             filePathLabel.setText("No dataset loaded");
         }
 
-        try{
+        try {
             NetworkUi.currentUI.setDataset(Dataset.readDatasetFromCSV(file.getPath(), testDataPercentage / 100.0f));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             filePathLabel.setTextFill(Color.web("#ff6347"));
             filePathLabel.setText("Error");
         }
@@ -111,7 +109,7 @@ public class MainController {
     @FXML
     protected void addHiddenLayerToList() {
 
-        if(neuronCountTextField.getText() != "") {
+        if (neuronCountTextField.getText() != "") {
             hiddenLayerNeuronCounts.add(Integer.parseInt(neuronCountTextField.getText()));
         }
         updateHiddenLayerList();
@@ -121,7 +119,7 @@ public class MainController {
     protected void removeHiddenLayerFromList() {
 
         int selectedIndex = hiddenLayerListView.getSelectionModel().getSelectedIndex();
-        if(selectedIndex >= 0) {
+        if (selectedIndex >= 0) {
             hiddenLayerNeuronCounts.remove(selectedIndex);
             updateHiddenLayerList();
         }
@@ -132,16 +130,13 @@ public class MainController {
 
         Dataset dataset = NetworkUi.currentUI.getDataset();
 
-        if(dataset == null) {
+        if (dataset == null) {
             showTrainingErrorPopup("No dataset was initialized!");
-        }
-        else if(learningRateTextField.getText().equals("")) {
+        } else if (learningRateTextField.getText().equals("")) {
             showTrainingErrorPopup("No learning rate was specified!");
-        }
-        else if(epochsTestField.getText().equals("")) {
+        } else if (epochsTestField.getText().equals("")) {
             showTrainingErrorPopup("No epochs were specified!");
-        }
-        else {
+        } else {
             double learningRate = Double.parseDouble((learningRateTextField.getText()));
             NeuralNetwork network = new NeuralNetwork(dataset, learningRate);
 
@@ -149,12 +144,11 @@ public class MainController {
             NetworkUi.currentUI.setNetwork(network);
 
 
-            for(int neuronCount : hiddenLayerNeuronCounts) {
+            for (int neuronCount : hiddenLayerNeuronCounts) {
                 network.addHiddenLayer(neuronCount);
 
             }
             network.initializeLayers();
-
 
 
             network.trainNetwork(Integer.parseInt(epochsTestField.getText()));
@@ -196,10 +190,10 @@ public class MainController {
 
     private void updateHiddenLayerList() {
 
-        ObservableList<String> hiddenLayerNeuronCountStringList =  FXCollections.observableList(new ArrayList<String>());
+        ObservableList<String> hiddenLayerNeuronCountStringList = FXCollections.observableList(new ArrayList<String>());
 
         int currentLayer = 0;
-        for(int neuronCount : hiddenLayerNeuronCounts) {
+        for (int neuronCount : hiddenLayerNeuronCounts) {
             hiddenLayerNeuronCountStringList.add("Hidden Layer #" + currentLayer + " - " + neuronCount + " Neurons");
             currentLayer++;
         }

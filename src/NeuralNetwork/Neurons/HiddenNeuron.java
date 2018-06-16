@@ -6,9 +6,9 @@ import java.util.List;
 
 public class HiddenNeuron extends ActivationNeuron {
 
-    public HiddenNeuron() {
+    public HiddenNeuron()
+    {
         super();
     }
-
 
 }

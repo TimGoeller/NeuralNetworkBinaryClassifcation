@@ -1,21 +1,22 @@
 package NeuralNetwork.Neurons;
 
-import NeuralNetwork.Connection;
+        import NeuralNetwork.Connection;
 
-import java.util.ArrayList;
-import java.util.List;
+        import java.util.ArrayList;
+        import java.util.List;
 
-public abstract class Neuron
-{
+public abstract class Neuron {
     protected double activationValue;
 
     private List<Connection> outputConnections = new ArrayList<Connection>();
 
-    public void addOutputConnection(Connection connection) {
+    public void addOutputConnection(Connection connection)
+    {
         this.outputConnections.add(connection);
     }
 
-    public List<Connection> getOutputConnections() {
+    public List<Connection> getOutputConnections()
+    {
         return outputConnections;
     }
 

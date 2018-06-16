@@ -11,17 +11,15 @@ import javafx.scene.chart.PieChart;
 import javafx.stage.Stage;
 
 
-public class NetworkUi extends Application
-{
+public class NetworkUi extends Application {
 
     public static NetworkUi currentUI;
 
     private NeuralNetwork network;
     private Dataset dataset;
 
-    public static void main( String[] args )
-    {
-        launch( args );
+    public static void main(String[] args) {
+        launch(args);
         /*
         Dataset d = Dataset.readDatasetFromCSV("Admission_Dataset_Getrennt.csv");
         NeuralNetwork network = new NeuralNetwork(2, d, 0.05);
@@ -37,7 +35,7 @@ public class NetworkUi extends Application
         */
     }
 
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
         currentUI = this;
 
@@ -57,13 +55,11 @@ public class NetworkUi extends Application
 
     }
 
-    public void setDataset(Dataset dataset)
-    {
+    public void setDataset(Dataset dataset) {
         this.dataset = dataset;
     }
 
-    public Dataset getDataset()
-    {
+    public Dataset getDataset() {
         return dataset;
     }
 

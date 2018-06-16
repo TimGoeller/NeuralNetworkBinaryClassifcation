@@ -9,20 +9,23 @@ import java.util.List;
 
 public class OutputLayer extends Layer<OutputNeuron> {
 
-    public OutputLayer() {
+    public OutputLayer()
+    {
         neurons.add(new OutputNeuron());
     }
 
     @Override
-    public void initializeLayer() {
+    public void initializeLayer()
+    {
         List<Connection> outputNeuronConnections = new ArrayList<Connection>();
-        super.getPreviousLayer().getNeuronsAsIterator().forEachRemaining(previousNeuron -> outputNeuronConnections.add(new Connection((Neuron)previousNeuron, neurons.get(0))));
+        super.getPreviousLayer().getNeuronsAsIterator().forEachRemaining(previousNeuron -> outputNeuronConnections.add(new Connection((Neuron) previousNeuron, neurons.get(0))));
         getOutputNeuron().setConnections(outputNeuronConnections);
 
         getOutputNeuron().getInputConnections().forEach(connection -> connection.getSourceNeuron().addOutputConnection(connection));
     }
 
-    public OutputNeuron getOutputNeuron() {
+    public OutputNeuron getOutputNeuron()
+    {
         return neurons.get(0);
     }
 }

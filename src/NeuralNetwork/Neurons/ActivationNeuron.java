@@ -1,6 +1,7 @@
 package NeuralNetwork.Neurons;
 
 import NeuralNetwork.Connection;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,52 +15,56 @@ public abstract class ActivationNeuron extends Neuron {
 
     private double error;
 
-    public double getError() {
+    public double getError()
+    {
         return error;
     }
 
-    public void setError(double error) {
+    public void setError(double error)
+    {
         this.error = error;
     }
 
 
-
-    public ActivationNeuron() {
+    public ActivationNeuron()
+    {
 
     }
 
-    public void setConnections(List<Connection> connections) {
+    public void setConnections(List<Connection> connections)
+    {
         this.inputConnections = connections;
     }
 
 
-    public List<Connection> getInputConnections() {
+    public List<Connection> getInputConnections()
+    {
         return inputConnections;
     }
 
-    public double getBias() {
+    public double getBias()
+    {
         return bias;
     }
 
     public void setBias(double bias)
     {
-        if( bias < -1.0 ) bias = -1.0;
-        if( bias > 1.0 ) bias = 1.0;
+        if (bias < -1.0) bias = -1.0;
+        if (bias > 1.0) bias = 1.0;
         this.bias = bias;
     }
 
     public void sigmoidActivation()
     {
         //System.out.println(1 +  Math.exp(-getValueOfInputConnections() ));
-        activationValue = 1 / ( 1 +  Math.exp(-(getValueOfInputConnections() + bias ) ) );
+        activationValue = 1 / (1 + Math.exp(-(getValueOfInputConnections() + bias)));
 
     }
 
     public double getValueOfInputConnections()
     {
         double sum = 0;
-        for ( Connection c : inputConnections )
-        {
+        for (Connection c : inputConnections) {
             sum += c.getConnectionValue();
         }
         inputValue = sum;
@@ -67,11 +72,13 @@ public abstract class ActivationNeuron extends Neuron {
         return sum;
     }
 
-    public double getInputValue() {
+    public double getInputValue()
+    {
         return inputValue;
     }
 
-    public void setInputValue(double inputValue) {
+    public void setInputValue(double inputValue)
+    {
         this.inputValue = inputValue;
     }
 }

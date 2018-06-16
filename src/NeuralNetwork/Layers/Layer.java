@@ -12,56 +12,64 @@ public abstract class Layer<T extends Neuron> {
 
     protected List<T> neurons = new ArrayList<T>();
 
-    int getNeuronCount() {
+    int getNeuronCount()
+    {
         return neurons.size();
     }
 
     private Layer nextLayer;
     private Layer previousLayer;
 
-    public Layer getNextLayer() {
+    public Layer getNextLayer()
+    {
         return nextLayer;
     }
 
-    public Layer getPreviousLayer() {
+    public Layer getPreviousLayer()
+    {
         return previousLayer;
     }
 
-    public void setNextLayer(Layer nextLayer) {
+    public void setNextLayer(Layer nextLayer)
+    {
         this.nextLayer = nextLayer;
     }
 
-    public void setPreviousLayer(Layer previousLayer) {
+    public void setPreviousLayer(Layer previousLayer)
+    {
         this.previousLayer = previousLayer;
     }
 
-    public Iterator<T> getNeuronsAsIterator() {
-
+    public Iterator<T> getNeuronsAsIterator()
+    {
         return new Iterator<T>() {
 
             int currentIndex;
 
             @Override
-            public boolean hasNext() {
+            public boolean hasNext()
+            {
                 return currentIndex < neurons.size();
             }
 
             @Override
-            public T next() {
+            public T next()
+            {
 
                 Neuron neuronToReturn = null;
 
-                if(currentIndex < neurons.size()) {
+                if (currentIndex < neurons.size()) {
                     neuronToReturn = neurons.get(currentIndex);
                 }
 
                 currentIndex++;
-                return (T)neuronToReturn;
+                return (T) neuronToReturn;
             }
         };
-
     }
-    public List<T> getNeurons() {
+
+    public List<T> getNeurons()
+    {
         return neurons;
     }
 

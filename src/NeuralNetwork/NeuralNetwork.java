@@ -23,8 +23,8 @@ public class NeuralNetwork { //static?
     private Dataset dataset;
     private ShadowNetwork shadowNetwork;
 
-    public NeuralNetwork(Dataset dataset, double learningRate) {
-
+    public NeuralNetwork(Dataset dataset, double learningRate)
+    {
         inputLayer = new InputLayer(dataset.getInputColumnCount());
         outputLayer = new OutputLayer();
         inputLayer.setNextLayer(outputLayer);
@@ -33,8 +33,8 @@ public class NeuralNetwork { //static?
         this.learningRate = learningRate;
     }
 
-    public void addHiddenLayer(int neuronCount) {
-
+    public void addHiddenLayer(int neuronCount)
+    {
         HiddenLayer hiddenLayer = new HiddenLayer(neuronCount);
 
         Layer previousLayer;
@@ -53,181 +53,145 @@ public class NeuralNetwork { //static?
         hiddenLayers.add(hiddenLayer);
     }
 
-    public void trainNetwork(int epochs) {
-
-        while(epochs > 0) {
-            epochs --;
+    public void trainNetwork(int epochs)
+    {
+        while (epochs > 0) {
+            epochs--;
 
             dataset.trainingSet.forEach(data -> train(data));
         }
-
     }
 
-    private void train(List<Double> data) {
-
-        /*System.out.println();
-        System.out.println("New Training Pass");
-        System.out.println();
-        System.out.println("X: " + data.get(0));
-        System.out.println("Y: " + data.get(1));
-        System.out.println();*/
-
-
+    private void train(List<Double> data)
+    {
         int currentNeuron = 0;
-        for(InputNeuron neuron : inputLayer.getNeurons()) {
+        for (InputNeuron neuron : inputLayer.getNeurons()) {
             neuron.setActivationValue(data.get(currentNeuron++));
         }
         outputLayer.getOutputNeuron().setExpectedValue(data.get(currentNeuron));
 
         Layer currentLayer = inputLayer;
 
-        while(currentLayer.getNextLayer() != null) {
+        while (currentLayer.getNextLayer() != null) {
             currentLayer = currentLayer.getNextLayer();
-            forwardPass(currentLayer );
+            forwardPass(currentLayer);
         }
 
         currentLayer = outputLayer;
 
-        while(currentLayer.getPreviousLayer() != null) { //Input connections to next layer are changed
+        while (currentLayer.getPreviousLayer() != null) { //Input connections to next layer are changed
             backwardPass(currentLayer);
             currentLayer = currentLayer.getPreviousLayer();
         }
-
-
     }
 
     public void testNetwork()
     {
         int match = 0;
-        for( int counter = 0; counter < dataset.testSet.size(); counter++ )
-        {
-            if( test( dataset.testSet.get( counter ) ) ) match++;
+        for (int counter = 0; counter < dataset.testSet.size(); counter++) {
+            if (test(dataset.testSet.get(counter))) match++;
         }
 
-        System.out.println( match + " von " + dataset.testSet.size() + " wurden richtig bestimmt." );
+        System.out.println(match + " von " + dataset.testSet.size() + " wurden richtig bestimmt.");
         lastTestSuccessRatio = (double) match / (double) dataset.testSet.size();
-        //System.out.println( "Korrektheitsrate: " + lastTestSuccessRatio * 100 + "%");
     }
 
-    public boolean test(List<Double> data) {
+    public boolean test(List<Double> data)
+    {
         int match = 0;
-        /*System.out.println();
-        System.out.println("New Test Pass");
-        System.out.println();
-        System.out.println("X: " + data.get(0));
-        System.out.println("Y: " + data.get(1));
-        System.out.println();*/
 
         int currentNeuron = 0;
-        for(InputNeuron neuron : inputLayer.getNeurons()) {
+        for (InputNeuron neuron : inputLayer.getNeurons()) {
             neuron.setActivationValue(data.get(currentNeuron++));
         }
         outputLayer.getOutputNeuron().setExpectedValue(data.get(currentNeuron));
 
         Layer currentLayer = inputLayer;
-        while(currentLayer.getNextLayer() != null) {
+        while (currentLayer.getNextLayer() != null) {
             currentLayer = currentLayer.getNextLayer();
-            forwardPass(currentLayer );
+            forwardPass(currentLayer);
         }
-        /*System.out.println( "Result: " + outputLayer.getOutputNeuron().getActivationValue() );
-        System.out.println( "Real value:" + outputLayer.getOutputNeuron().getExpectedValue() );*/
-        //Return TRUE if guess was correct
-        if( Math.round(outputLayer.getOutputNeuron().getActivationValue()) != data.get( data.size() - 1 ) )
-        {
-           /* System.out.println( "ERROR404: X:" + data.get(0) + " Y:" + data.get(1) );*/
-        }
-        return (Math.round( outputLayer.getOutputNeuron().getActivationValue() ) == data.get( data.size() - 1 ) );
-
+        return (Math.round(outputLayer.getOutputNeuron().getActivationValue()) == data.get(data.size() - 1));
     }
 
-    private void forwardPass(Layer layer) {
-
+    private void forwardPass(Layer layer)
+    {
         Iterator<Neuron> it = layer.getNeuronsAsIterator();
-        while(it.hasNext()) {
-            ActivationNeuron currentNeuron = (ActivationNeuron)it.next();
+        while (it.hasNext()) {
+            ActivationNeuron currentNeuron = (ActivationNeuron) it.next();
             currentNeuron.sigmoidActivation();
         }
     }
 
-    private void backwardPass(Layer layer) {
-
+    private void backwardPass(Layer layer)
+    {
         Iterator<Neuron> it = layer.getNeuronsAsIterator();
-        while(it.hasNext()) {
-            ActivationNeuron currentNeuron = (ActivationNeuron)it.next();
-            if(currentNeuron instanceof OutputNeuron) {
+        while (it.hasNext()) {
+            ActivationNeuron currentNeuron = (ActivationNeuron) it.next();
+            if (currentNeuron instanceof OutputNeuron) {
                 double y = ((OutputNeuron) currentNeuron).getExpectedValue();
                 double a = currentNeuron.getActivationValue();
-                if(a == 1) {
-                    a = a-0.00000001; //Teilen: The way to go
+                if (a == 1) {
+                    a = a - 0.00000001; //Teilen: The way to go
                 }
 
                 double addedValues = 0;
-                for(int i = 0; i < inputLayer.getNeurons().size(); i++) {
-                    addedValues += inputLayer.getNeurons().get(i).getActivationValue()*(a-y);
+                for (int i = 0; i < inputLayer.getNeurons().size(); i++) {
+                    addedValues += inputLayer.getNeurons().get(i).getActivationValue() * (a - y);
                 }
 
-                double error = -(1.0f/inputLayer.getNeurons().size())*addedValues;
+                double error = -(1.0f / inputLayer.getNeurons().size()) * addedValues;
                 currentNeuron.setError(error);
-
-
-                /*System.out.println("PREDICTION: " + currentNeuron.getActivationValue());
-                System.out.println("REAL VAL: " + ((OutputNeuron) currentNeuron).getExpectedValue());
-                System.out.println("Error: " + error);*/
-
-
-            }
-            else {
+            } else {
                 double errorSum = 0;
 
-                for(Connection con : currentNeuron.getOutputConnections()) {
-                    //System.out.println(con.getWeight() * ((ActivationNeuron)con.getDestinationNeuron()).getActivationValue());
+                for (Connection con : currentNeuron.getOutputConnections()) {
                     errorSum += con.getWeight() * ((ActivationNeuron) con.getDestinationNeuron()).getError();
                 }
-                double errorMultipliedSigmoidDerivative = errorSum * (currentNeuron.getActivationValue() * (1-currentNeuron.getActivationValue()));
+                double errorMultipliedSigmoidDerivative = errorSum * (currentNeuron.getActivationValue() * (1 - currentNeuron.getActivationValue()));
                 currentNeuron.setError(errorMultipliedSigmoidDerivative);
-                //System.out.println("Propagated Error: " + errorMultipliedSigmoidDerivative);
             }
-            //currentNeuron.ge
 
-            for(Connection con : currentNeuron.getInputConnections()) {
-                //System.out.println();
+            for (Connection con : currentNeuron.getInputConnections()) {
                 double change = con.getSourceNeuron().getActivationValue() * currentNeuron.getError() * learningRate;
                 con.setWeight(con.getWeight() + change);
             }
             double change = currentNeuron.getError() * learningRate;
             currentNeuron.setBias(currentNeuron.getBias() + change);
         }
-
     }
 
-    public void initializeLayers() {
-
+    public void initializeLayers()
+    {
         Iterator<Layer> layerIt = getLayersAsIterator();
 
-        while(layerIt.hasNext()) {
+        while (layerIt.hasNext()) {
             layerIt.next().initializeLayer();
         }
 
         List<Integer> hiddenLayerNeuronCount = new ArrayList<Integer>();
-        for ( HiddenLayer layer : hiddenLayers ) hiddenLayerNeuronCount.add(layer.getNeurons().size());
+        for (HiddenLayer layer : hiddenLayers) hiddenLayerNeuronCount.add(layer.getNeurons().size());
 
         shadowNetwork = new ShadowNetwork(inputLayer.getNeurons().size(), hiddenLayerNeuronCount);
         shadowNetwork.initializeLayers();
     }
 
-    public Iterator<Layer> getLayersAsIterator() {
+    public Iterator<Layer> getLayersAsIterator()
+    {
         return new Iterator<Layer>() {
 
             private Layer currentLayer;
 
             @Override
-            public boolean hasNext() {
+            public boolean hasNext()
+            {
                 return !(currentLayer instanceof OutputLayer);
             }
 
             @Override
-            public Layer next() {
-                if(currentLayer == null)
+            public Layer next()
+            {
+                if (currentLayer == null)
                     currentLayer = inputLayer;
                 else
                     currentLayer = currentLayer.getNextLayer();
@@ -236,7 +200,8 @@ public class NeuralNetwork { //static?
         };
     }
 
-    public double getLastTestSuccessRatio() {
+    public double getLastTestSuccessRatio()
+    {
         return lastTestSuccessRatio;
     }
 
