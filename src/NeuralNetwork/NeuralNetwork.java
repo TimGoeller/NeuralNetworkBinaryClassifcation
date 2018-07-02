@@ -16,12 +16,11 @@ import java.util.List;
 public class NeuralNetwork { //static?
 
     private InputLayer inputLayer;
-    public List<HiddenLayer> hiddenLayers = new ArrayList<HiddenLayer>();
+    private List<HiddenLayer> hiddenLayers = new ArrayList<HiddenLayer>();
     private OutputLayer outputLayer;
     private double lastTestSuccessRatio;
     private double learningRate;
     private Dataset dataset;
-    private ShadowNetwork shadowNetwork;
 
     public NeuralNetwork(Dataset dataset, double learningRate)
     {
@@ -37,13 +36,7 @@ public class NeuralNetwork { //static?
     {
         HiddenLayer hiddenLayer = new HiddenLayer(neuronCount);
 
-        Layer previousLayer;
-
-        if (hiddenLayers.isEmpty()) {
-            previousLayer = inputLayer;
-        } else {
-            previousLayer = hiddenLayers.get(hiddenLayers.size() - 1);
-        }
+        Layer previousLayer = hiddenLayers.isEmpty() ? inputLayer : hiddenLayers.get(hiddenLayers.size() - 1);
 
         hiddenLayer.setPreviousLayer(previousLayer);
         previousLayer.setNextLayer(hiddenLayer);
@@ -55,20 +48,16 @@ public class NeuralNetwork { //static?
 
     public void trainNetwork(int epochs)
     {
-        while (epochs > 0) {
-            epochs--;
-
-            dataset.trainingSet.forEach(data -> train(data));
+        while (epochs-- > 0) {
+            dataset.trainingSet.forEach(this::train);
         }
     }
 
     private void train(List<Double> data)
     {
-        int currentNeuron = 0;
-        for (InputNeuron neuron : inputLayer.getNeurons()) {
-            neuron.setActivationValue(data.get(currentNeuron++));
-        }
-        outputLayer.getOutputNeuron().setExpectedValue(data.get(currentNeuron));
+        inputLayer.getNeurons().forEach(inputNeuron -> inputNeuron.setActivationValue(data.get(inputLayer.getNeurons().indexOf(inputNeuron))));
+
+        outputLayer.getOutputNeuron().setExpectedValue(data.get(inputLayer.getNeurons().size()));
 
         Layer currentLayer = inputLayer;
 
@@ -96,122 +85,81 @@ public class NeuralNetwork { //static?
         lastTestSuccessRatio = (double) match / (double) dataset.testSet.size();
     }
 
-    public boolean test(List<Double> data)
+    private boolean test(List<Double> data)
     {
-        int match = 0;
-
-        int currentNeuron = 0;
-        for (InputNeuron neuron : inputLayer.getNeurons()) {
-            neuron.setActivationValue(data.get(currentNeuron++));
-        }
-        outputLayer.getOutputNeuron().setExpectedValue(data.get(currentNeuron));
+        inputLayer.getNeurons().forEach(inputNeuron -> inputNeuron.setActivationValue(data.get(inputLayer.getNeurons().indexOf(inputNeuron))));
 
         Layer currentLayer = inputLayer;
+
         while (currentLayer.getNextLayer() != null) {
             currentLayer = currentLayer.getNextLayer();
             forwardPass(currentLayer);
         }
+
         return (Math.round(outputLayer.getOutputNeuron().getActivationValue()) == data.get(data.size() - 1));
     }
 
     private void forwardPass(Layer layer)
     {
-        Iterator<Neuron> it = layer.getNeuronsAsIterator();
-        while (it.hasNext()) {
-            ActivationNeuron currentNeuron = (ActivationNeuron) it.next();
-            currentNeuron.sigmoidActivation();
+        for(Object neuron : layer) {
+            ((ActivationNeuron) neuron).sigmoidActivation();
         }
     }
 
     private void backwardPass(Layer layer)
     {
-        Iterator<Neuron> it = layer.getNeuronsAsIterator();
-        while (it.hasNext()) {
-            ActivationNeuron currentNeuron = (ActivationNeuron) it.next();
+        Iterator it =layer.getNeuronsAsIterator();
+
+        for(Object neuron : layer) {
+            ActivationNeuron currentNeuron = (ActivationNeuron) neuron;
+
             if (currentNeuron instanceof OutputNeuron) {
-                double y = ((OutputNeuron) currentNeuron).getExpectedValue();
-                double a = currentNeuron.getActivationValue();
-                if (a == 1) {
-                    a = a - 0.00000001; //Teilen: The way to go
-                }
+                //Cross Entropy
+                double expectedValue = ((OutputNeuron) currentNeuron).getExpectedValue();
+                double activationValue = currentNeuron.getActivationValue();
 
-                double addedValues = 0;
+                double crossEntropySum = 0;
                 for (int i = 0; i < inputLayer.getNeurons().size(); i++) {
-                    addedValues += inputLayer.getNeurons().get(i).getActivationValue() * (a - y);
+                    crossEntropySum += inputLayer.getNeurons().get(i).getActivationValue() * (activationValue - expectedValue);
                 }
 
-                double error = -(1.0f / inputLayer.getNeurons().size()) * addedValues;
+                double error = -(1.0f / inputLayer.getNeurons().size()) * crossEntropySum;
                 currentNeuron.setError(error);
             } else {
+                //Backpropagate error
                 double errorSum = 0;
 
                 for (Connection con : currentNeuron.getOutputConnections()) {
                     errorSum += con.getWeight() * ((ActivationNeuron) con.getDestinationNeuron()).getError();
                 }
+
                 double errorMultipliedSigmoidDerivative = errorSum * (currentNeuron.getActivationValue() * (1 - currentNeuron.getActivationValue()));
                 currentNeuron.setError(errorMultipliedSigmoidDerivative);
             }
 
+            //Change weights and biases
             for (Connection con : currentNeuron.getInputConnections()) {
-                double change = con.getSourceNeuron().getActivationValue() * currentNeuron.getError() * learningRate;
-                con.setWeight(con.getWeight() + change);
+                double weightChange = con.getSourceNeuron().getActivationValue() * currentNeuron.getError() * learningRate;
+                con.setWeight(con.getWeight() + weightChange);
             }
-            double change = currentNeuron.getError() * learningRate;
-            currentNeuron.setBias(currentNeuron.getBias() + change);
+
+            double biasChange = currentNeuron.getError() * learningRate; //Activation value of 1, essentially just another weight
+            currentNeuron.setBias(currentNeuron.getBias() + biasChange);
         }
     }
 
     public void initializeLayers()
     {
-        Iterator<Layer> layerIt = getLayersAsIterator();
+        Layer currentLayer = inputLayer;
 
-        while (layerIt.hasNext()) {
-            layerIt.next().initializeLayer();
+        while(currentLayer != null) {
+            currentLayer.initializeLayer();
+            currentLayer = currentLayer.getNextLayer();
         }
-
-        List<Integer> hiddenLayerNeuronCount = new ArrayList<Integer>();
-        for (HiddenLayer layer : hiddenLayers) hiddenLayerNeuronCount.add(layer.getNeurons().size());
-
-        shadowNetwork = new ShadowNetwork(inputLayer.getNeurons().size(), hiddenLayerNeuronCount);
-        shadowNetwork.initializeLayers();
-    }
-
-    public Iterator<Layer> getLayersAsIterator()
-    {
-        return new Iterator<Layer>() {
-
-            private Layer currentLayer;
-
-            @Override
-            public boolean hasNext()
-            {
-                return !(currentLayer instanceof OutputLayer);
-            }
-
-            @Override
-            public Layer next()
-            {
-                if (currentLayer == null)
-                    currentLayer = inputLayer;
-                else
-                    currentLayer = currentLayer.getNextLayer();
-                return currentLayer;
-            }
-        };
     }
 
     public double getLastTestSuccessRatio()
     {
         return lastTestSuccessRatio;
-    }
-
-    private void initializeShadowNetwork()
-    {
-
-    }
-
-    private void synchronizeNetwork()
-    {
-
     }
 }

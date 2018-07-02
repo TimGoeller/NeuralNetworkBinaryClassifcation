@@ -22,7 +22,7 @@ public class HiddenLayer extends Layer<HiddenNeuron> {
         for (HiddenNeuron neuron : neurons) {
             List<Connection> hiddenNeuronConnections = new ArrayList<Connection>();
             super.getPreviousLayer().getNeuronsAsIterator().forEachRemaining(previousNeuron -> hiddenNeuronConnections.add(new Connection((Neuron) previousNeuron, neuron)));
-            neuron.setConnections(hiddenNeuronConnections);
+            neuron.setInputConnections(hiddenNeuronConnections);
 
             neuron.getInputConnections().forEach(connection -> connection.getSourceNeuron().addOutputConnection(connection));
         }

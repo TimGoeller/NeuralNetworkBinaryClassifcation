@@ -8,17 +8,16 @@ import NeuralNetwork.NeuralNetwork;
 import NeuralNetwork.Neurons.HiddenNeuron;
 import NeuralNetwork.Neurons.Neuron;
 
-public abstract class Layer<T extends Neuron> {
+public abstract class Layer<T extends Neuron> implements Iterable<T>{
 
     protected List<T> neurons = new ArrayList<T>();
+    private Layer nextLayer;
+    private Layer previousLayer;
 
     int getNeuronCount()
     {
         return neurons.size();
     }
-
-    private Layer nextLayer;
-    private Layer previousLayer;
 
     public Layer getNextLayer()
     {
@@ -42,7 +41,7 @@ public abstract class Layer<T extends Neuron> {
 
     public Iterator<T> getNeuronsAsIterator()
     {
-        return new Iterator<T>() {
+        return new Iterator<>() {
 
             int currentIndex;
 
@@ -55,15 +54,14 @@ public abstract class Layer<T extends Neuron> {
             @Override
             public T next()
             {
-
-                Neuron neuronToReturn = null;
+                T neuronToReturn = null;
 
                 if (currentIndex < neurons.size()) {
                     neuronToReturn = neurons.get(currentIndex);
                 }
 
                 currentIndex++;
-                return (T) neuronToReturn;
+                return neuronToReturn;
             }
         };
     }
@@ -74,4 +72,10 @@ public abstract class Layer<T extends Neuron> {
     }
 
     public abstract void initializeLayer();
+
+    @Override
+    public Iterator<T> iterator()
+    {
+        return getNeuronsAsIterator();
+    }
 }

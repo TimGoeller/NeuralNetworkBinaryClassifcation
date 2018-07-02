@@ -1,9 +1,8 @@
 package NeuralNetwork.Neurons;
 
-        import NeuralNetwork.Connection;
-
-        import java.util.ArrayList;
-        import java.util.List;
+import NeuralNetwork.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Neuron {
     protected double activationValue;
